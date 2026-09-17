@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Rayen Gader — Cyber Security Engineer</title>
+<meta name="description" content="Cyber Security Engineer and L2 SOC analyst. I deploy and tune Darktrace, LogRhythm and CrowdStrike across a managed SOC, and I built a ten-component detection and response chain that alerts in under a minute.">
+<meta name="author" content="Rayen Gader">
+<meta name="theme-color" content="#080C14">
+<link rel="canonical" href="https://rayengader.github.io/">
+
+<meta property="og:type" content="profile">
+<meta property="og:title" content="Rayen Gader — Cyber Security Engineer">
+<meta property="og:description" content="L2 SOC analyst and detection engineer. Darktrace, LogRhythm, CrowdStrike. A ten-component SOC built end to end, measured MTTD under one minute. 18 certifications.">
+<meta property="og:url" content="https://rayengader.github.io/">
+<meta name="twitter:card" content="summary">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..800&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="assets/css/style.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='4' fill='%23080C14'/%3E%3Cpath d='M16 5l9 3.4v7.2c0 5.5-3.7 9.6-9 11.4-5.3-1.8-9-5.9-9-11.4V8.4z' fill='none' stroke='%23FFB020' stroke-width='2'/%3E%3C/svg%3E">
+</head>
+<body>
+
+<header class="statusbar">
+  <div class="wrap">
+    <span class="brand"><span class="led" aria-hidden="true"></span>rayen.gader<span class="slash">/</span>soc</span>
+    <nav class="navlinks" aria-label="Sections">
+      <a href="#whoami">whoami</a>
+      <a href="#operations">operations</a>
+      <a href="#soc-build">soc_build</a>
+      <a href="#apt34">threat_intel</a>
+      <a href="#timeline">experience</a>
+      <a href="#arsenal">arsenal</a>
+      <a href="#certs">certifications</a>
+    </nav>
+    <a class="bar-cta" href="#contact">Get in touch</a>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <!-- ============================ HERO ============================ -->
+  <section class="hero" aria-labelledby="name">
+    <div class="term" id="boot">
+      <div class="term-bar">
+        <span class="dot r" aria-hidden="true"></span>
+        <span class="dot y" aria-hidden="true"></span>
+        <span class="dot g" aria-hidden="true"></span>
+        <span class="term-title">analyst@soc — bash — 80×12</span>
+      </div>
+      <div class="term-body">
+        <span class="ln"><span class="pr">analyst@soc:~$</span> whoami --full</span>
+        <span class="ln">Rayen Gader · Cyber Security Engineer · Ariana, Tunisia</span>
+        <span class="ln"><span class="pr">analyst@soc:~$</span> systemctl status detection.stack</span>
+        <span class="ln"><span class="ok">●</span> darktrace.ndr      <span class="ok">active</span>  <span class="cm">— deployed, tuned</span></span>
+        <span class="ln"><span class="ok">●</span> logrhythm.siem     <span class="ok">active</span>  <span class="cm">— use cases, correlation</span></span>
+        <span class="ln"><span class="ok">●</span> crowdstrike.xdr    <span class="ok">active</span>  <span class="cm">— endpoint + identity</span></span>
+        <span class="ln"><span class="pr">analyst@soc:~$</span> cat status.txt</span>
+        <span class="ln"><span class="am">open to opportunities — relocation or remote</span><span class="cursor" aria-hidden="true"></span></span>
+      </div>
+    </div>
+
+    <div class="hero-id">
+      <h1 id="name">Rayen<span class="thin">Gader</span></h1>
+      <p class="hero-role"><b>Cyber Security Engineer</b> · L2 SOC Analyst · Detection &amp; Incident Response</p>
+      <p class="hero-thesis">
+        I build the detection platforms a managed SOC runs on, then work the alerts they raise.
+        Two years of that at <strong>Global IT Vision</strong> — and one engineering project where I
+        built an entire SOC from nothing and <strong>measured how fast it fires</strong>.
+      </p>
+      <div class="hero-actions">
+        <a class="btn btn-primary" href="#soc-build">See the SOC I built</a>
+        <a class="btn" href="assets/cv/CV_Rayen_Gader_EN.pdf" target="_blank" rel="noopener">Résumé (EN, PDF)</a>
+        <a class="btn" href="assets/cv/CV_Rayen_Gader_FR.pdf" target="_blank" rel="noopener">CV (FR, PDF)</a>
+      </div>
+    </div>
+
+    <div class="stats">
+      <div class="stat"><div class="n">2+ yrs</div><div class="k">in a managed SOC,<br>L2 escalation analyst</div></div>
+      <div class="stat"><div class="n">18</div><div class="k">certifications<br>INE · EC-Council · CrowdStrike</div></div>
+      <div class="stat"><div class="n">&lt; 1 min</div><div class="k">measured MTTD on the<br>10-component SOC I built</div></div>
+      <div class="stat"><div class="n">Top 1%</div><div class="k">globally on TryHackMe<br>CTF: THM · HackTheBox</div></div>
+    </div>
+  </section>
+
+  <!-- ============================ WHOAMI ============================ -->
+  <section class="mod" id="whoami" aria-labelledby="h-whoami">
+    <div class="mod-head">
+      <span class="mod-id">// 01</span>
+      <h2 class="mod-name" id="h-whoami">whoami</h2>
+      <span class="mod-meta">Ariana, Tunisia · open to relocation</span>
+    </div>
+
+    <div class="about-grid">
+      <div class="prose">
+        <p>
+          Most people in a SOC either run the tooling or work the queue. I do both, and that is the
+          whole point of how I work: I commission and tune the detection platforms across a client
+          estate — writing the use cases, authoring the correlation rules, cutting the false positives —
+          and then I am the <strong>L2 analyst</strong> who investigates what those same rules escalate.
+          Building the detection and answering for it closes a loop most teams leave open.
+        </p>
+        <p>
+          The investigation side is <strong>NIST SP 800-61</strong> work: reconstruct the attack scenario,
+          find root cause, contain, and hand the client's decision-makers a prioritised remediation they
+          can actually act on. Between incidents it is threat hunting, posture advisory, and getting
+          client teams to a level where they catch things themselves.
+        </p>
+        <p>
+          For my engineering final-year project I stopped consuming detection platforms and built one:
+          ten components, eight of them open source, validated against real MITRE ATT&amp;CK scenarios
+          with a stopwatch on it. That project is <a href="#soc-build">further down this page</a>, and
+          you can run its attack scenarios yourself.
+        </p>
+      </div>
+
+      <dl class="facts">
+        <div class="fact"><dt>role</dt><dd>Cyber Security Engineer</dd></div>
+        <div class="fact"><dt>focus</dt><dd>Blue team <span class="muted">— SOC, DFIR, detection engineering</span></dd></div>
+        <div class="fact"><dt>based</dt><dd>Ariana, Tunisia</dd></div>
+        <div class="fact"><dt>mobility</dt><dd>EU · Canada · EMEA <span class="muted">or remote</span></dd></div>
+        <div class="fact"><dt>notice</dt><dd>One month</dd></div>
+        <div class="fact"><dt>degree</dt><dd>Engineering, Network &amp; IS Security <span class="muted">— TEK-UP, 2026</span></dd></div>
+        <div class="fact"><dt>languages</dt><dd>Arabic <span class="muted">native</span> · French <span class="muted">fluent</span> · English <span class="muted">fluent</span></dd></div>
+        <div class="fact"><dt>clearance</dt><dd>Authorised in Tunisia <span class="muted">· sponsorship needed abroad</span></dd></div>
+      </dl>
+    </div>
+  </section>
+
+  <!-- ============================ OPERATIONS ============================ -->
+  <section class="mod" id="operations" aria-labelledby="h-ops">
+    <div class="mod-head">
+      <span class="mod-id">// 02</span>
+      <h2 class="mod-name" id="h-ops">Platforms I run in production</h2>
+      <span class="mod-meta">Global IT Vision · managed SOC · client estate</span>
+    </div>
+
+    <div class="platforms">
+      <article class="plat">
+        <h3>Darktrace</h3>
+        <div class="cls">NDR · network detection</div>
+        <p>
+          Deployment and tuning of the self-learning model set, then working the model breaches it
+          raises — separating genuine anomaly from a network that simply changed shape.
+        </p>
+        <span class="cert-tag">Certified Cyber Engineer · Threat Visualizer</span>
+      </article>
+
+      <article class="plat p2">
+        <h3>LogRhythm</h3>
+        <div class="cls">SIEM · correlation &amp; use cases</div>
+        <p>
+          Log source onboarding, AI Engine rule authoring and use-case design against the client's
+          actual risk, plus the unglamorous half: driving false positives down until the queue means
+          something again.
+        </p>
+        <span class="cert-tag">LRSA · LRPA</span>
+      </article>
+
+      <article class="plat p3">
+        <h3>CrowdStrike Falcon</h3>
+        <div class="cls">XDR · endpoint &amp; identity</div>
+        <p>
+          Sensor rollout, policy and prevention tuning, and process-tree investigation on detections —
+          including Identity Protection over Active Directory.
+        </p>
+        <span class="cert-tag">CCFA — Certified Falcon Administrator</span>
+      </article>
+    </div>
+  </section>
+
+  <!-- ============================ SOC BUILD ============================ -->
+  <section class="mod" id="soc-build" aria-labelledby="h-soc">
+    <div class="mod-head">
+      <span class="mod-id">// 03</span>
+      <h2 class="mod-name" id="h-soc">A SOC, built end to end</h2>
+      <span class="mod-meta">Engineering final-year project · Global IT Vision · 2026</span>
+    </div>
+
+    <div class="prose" style="margin-bottom:26px">
+      <p>
+        Ten components, <strong>eight of them open source</strong>, segmented behind a Palo Alto NGFW
+        and aligned to the <strong>NIST SP 800-61</strong> incident response lifecycle. Detection,
+        enrichment, case management and notification all wired together — then proved with two
+        end-to-end MITRE ATT&amp;CK scenarios rather than a screenshot of a dashboard.
+      </p>
+      <p>
+        Pick a scenario and replay it. The clock is the measurement that mattered:
+        <strong>time to a contextualised alert, with no human in the loop</strong>.
+      </p>
+    </div>
+
+    <div class="console">
+      <div class="console-bar">
+        <span class="lbl">scenario</span>
+        <div class="scenario-pick" role="group" aria-label="Attack scenario">
+          <button type="button" class="chip" id="sc-ftp" data-scenario="ftp" aria-pressed="true">T1110.001 · FTP brute force</button>
+          <button type="button" class="chip" id="sc-web" data-scenario="web" aria-pressed="false">T1190 → T1505.003 · SQLi + webshell</button>
+        </div>
+        <button type="button" class="btn run" id="replay">▶ Replay attack</button>
+        <span class="clock" id="clock">t+<b>00:00</b> · idle</span>
+      </div>
+
+      <div class="topo-wrap">
+        <svg class="topo" viewBox="0 0 920 470" role="img" aria-labelledby="topo-title topo-desc">
+          <title id="topo-title">Architecture of the ten-component SOC</title>
+          <desc id="topo-desc">An attacker on the internet reaches a DMZ and a LAN through a Palo Alto next-generation firewall. Suricata and CrowdStrike Falcon feed telemetry into a Wazuh SIEM, which opens cases in TheHive, enriches them through Cortex against VirusTotal and AbuseIPDB, publishes indicators to MISP, and notifies through n8n. Zabbix, Prometheus and Grafana watch platform health.</desc>
+
+          <!-- zones -->
+          <rect class="zone-box" x="278" y="40" width="176" height="148" rx="3"></rect>
+          <text class="zone-label" x="286" y="34">DMZ · 10.10.20.0/24</text>
+          <rect class="zone-box" x="278" y="218" width="176" height="148" rx="3"></rect>
+          <text class="zone-label" x="286" y="212">LAN · ACTIVE DIRECTORY</text>
+          <rect class="zone-box" x="614" y="258" width="176" height="152" rx="3"></rect>
+          <text class="zone-label" x="622" y="252">SOAR · CASE MANAGEMENT</text>
+
+          <!-- edges -->
+          <path id="pA"  class="edge"     d="M112,230 L140,230"></path>
+          <path id="pB1" class="edge"     d="M250,222 C268,222 272,90 294,90"></path>
+          <path id="pB2" class="edge"     d="M250,230 C268,230 272,144 294,144"></path>
+          <path id="pB3" class="edge"     d="M250,242 C268,242 272,268 294,268"></path>
+          <path id="pC1" class="edge-dim" d="M438,90 L482,96"></path>
+          <path id="pC2" class="edge-dim" d="M438,144 C462,144 466,104 482,104"></path>
+          <path id="pC3" class="edge-dim" d="M438,108 C466,116 462,248 482,272"></path>
+          <path id="pC4" class="edge-dim" d="M438,268 L482,278"></path>
+          <path id="pD1" class="edge"     d="M606,96 C620,96 620,178 632,178"></path>
+          <path id="pD2" class="edge"     d="M606,282 C620,282 620,202 632,202"></path>
+          <path id="pE"  class="edge"     d="M702,216 L702,278"></path>
+          <path id="pF"  class="edge"     d="M702,314 L702,326"></path>
+          <path id="pG"  class="edge"     d="M702,362 L702,374"></path>
+          <path id="pH"  class="edge"     d="M772,296 C790,296 788,338 800,344"></path>
+          <path         class="edge-dim" d="M772,188 L800,188"></path>
+
+          <!-- nodes -->
+          <g class="node" id="n-atk">
+            <rect class="n-box" x="16" y="210" width="96" height="40" rx="2"></rect>
+            <text class="n-label" x="64" y="228" text-anchor="middle">ATTACKER</text>
+            <text class="n-sub"   x="64" y="241" text-anchor="middle">203.0.113.44</text>
+          </g>
+          <g class="node" id="n-ngfw">
+            <rect class="n-box" x="140" y="206" width="110" height="48" rx="2"></rect>
+            <text class="n-label" x="195" y="226" text-anchor="middle">PALO ALTO</text>
+            <text class="n-sub"   x="195" y="240" text-anchor="middle">NGFW · segmentation</text>
+          </g>
+          <g class="node" id="n-web">
+            <rect class="n-box" x="294" y="72" width="144" height="36" rx="2"></rect>
+            <text class="n-label" x="366" y="88"  text-anchor="middle">WEB SERVER</text>
+            <text class="n-sub"   x="366" y="100" text-anchor="middle">apache2 · php</text>
+          </g>
+          <g class="node" id="n-ftp">
+            <rect class="n-box" x="294" y="126" width="144" height="36" rx="2"></rect>
+            <text class="n-label" x="366" y="142" text-anchor="middle">FTP SERVER</text>
+            <text class="n-sub"   x="366" y="154" text-anchor="middle">vsftpd</text>
+          </g>
+          <g class="node" id="n-ad">
+            <rect class="n-box" x="294" y="250" width="144" height="36" rx="2"></rect>
+            <text class="n-label" x="366" y="266" text-anchor="middle">DOMAIN CONTROLLER</text>
+            <text class="n-sub"   x="366" y="278" text-anchor="middle">windows server · AD</text>
+          </g>
+          <g class="node" id="n-ws">
+            <rect class="n-box" x="294" y="304" width="144" height="36" rx="2"></rect>
+            <text class="n-label" x="366" y="320" text-anchor="middle">ENDPOINTS</text>
+            <text class="n-sub"   x="366" y="332" text-anchor="middle">8 wazuh agents</text>
+          </g>
+          <g class="node" id="n-suri">
+            <rect class="n-box" x="482" y="76" width="124" height="40" rx="2"></rect>
+            <text class="n-label" x="544" y="94"  text-anchor="middle">SURICATA</text>
+            <text class="n-sub"   x="544" y="107" text-anchor="middle">NIDS · span port</text>
+          </g>
+          <g class="node" id="n-cs">
+            <rect class="n-box" x="482" y="262" width="124" height="40" rx="2"></rect>
+            <text class="n-label" x="544" y="280" text-anchor="middle">CROWDSTRIKE</text>
+            <text class="n-sub"   x="544" y="293" text-anchor="middle">XDR · identity protection</text>
+          </g>
+          <g class="node" id="n-wazuh">
+            <rect class="n-box" x="632" y="160" width="140" height="56" rx="2"></rect>
+            <text class="n-label" x="702" y="182" text-anchor="middle">WAZUH</text>
+            <text class="n-sub"   x="702" y="196" text-anchor="middle">SIEM · 4 correlated sources</text>
+            <text class="n-sub"   x="702" y="207" text-anchor="middle">custom correlation rules</text>
+          </g>
+          <g class="node" id="n-hive">
+            <rect class="n-box" x="632" y="278" width="140" height="36" rx="2"></rect>
+            <text class="n-label" x="702" y="294" text-anchor="middle">THEHIVE</text>
+            <text class="n-sub"   x="702" y="306" text-anchor="middle">case management</text>
+          </g>
+          <g class="node" id="n-cortex">
+            <rect class="n-box" x="632" y="326" width="140" height="36" rx="2"></rect>
+            <text class="n-label" x="702" y="342" text-anchor="middle">CORTEX</text>
+            <text class="n-sub"   x="702" y="354" text-anchor="middle">VirusTotal · AbuseIPDB</text>
+          </g>
+          <g class="node" id="n-misp">
+            <rect class="n-box" x="632" y="374" width="140" height="36" rx="2"></rect>
+            <text class="n-label" x="702" y="390" text-anchor="middle">MISP</text>
+            <text class="n-sub"   x="702" y="402" text-anchor="middle">threat intel sharing</text>
+          </g>
+          <g class="node" id="n-n8n">
+            <rect class="n-box" x="800" y="326" width="104" height="36" rx="2"></rect>
+            <text class="n-label" x="852" y="342" text-anchor="middle">n8n</text>
+            <text class="n-sub"   x="852" y="354" text-anchor="middle">notification</text>
+          </g>
+          <g class="node" id="n-noc">
+            <rect class="n-box" x="800" y="160" width="104" height="56" rx="2"></rect>
+            <text class="n-label" x="852" y="180" text-anchor="middle">NOC</text>
+            <text class="n-sub"   x="852" y="194" text-anchor="middle">zabbix · prometheus</text>
+            <text class="n-sub"   x="852" y="205" text-anchor="middle">grafana</text>
+          </g>
+
+          <circle id="packet" class="packet" r="4" cx="-20" cy="-20" opacity="0"></circle>
+        </svg>
+      </div>
+
+      <div class="logpane" id="log" role="log" aria-live="polite" aria-label="Correlation timeline"></div>
+
+      <div class="verdict">
+        <span>detection <span class="v" id="v-mttd">MTTD 00:09</span></span>
+        <span>rule <span class="v" id="v-rule">wazuh 100210 · level 12</span></span>
+        <span>case <span class="v" id="v-case">TheHive #0142 · HIGH</span></span>
+        <span>outcome <span class="v good" id="v-out">contextualised alert · no human action</span></span>
+      </div>
+    </div>
+
+    <div class="build-grid">
+      <div class="build">
+        <div class="role">Detect</div>
+        <div class="tools"><span class="os">Wazuh</span> · <span class="os">Suricata</span> · CrowdStrike Falcon XDR</div>
+      </div>
+      <div class="build">
+        <div class="role">Enrich &amp; respond</div>
+        <div class="tools"><span class="os">TheHive</span> · <span class="os">Cortex</span> · <span class="os">MISP</span></div>
+      </div>
+      <div class="build">
+        <div class="role">Observe</div>
+        <div class="tools"><span class="os">Zabbix</span> · <span class="os">Prometheus</span> · <span class="os">Grafana</span></div>
+      </div>
+      <div class="build">
+        <div class="role">Segment &amp; notify</div>
+        <div class="tools">Palo Alto NGFW · <span class="os">n8n</span></div>
+      </div>
+    </div>
+    <p class="mod-meta" style="margin:10px 0 0">Cyan marks the eight open-source components. Addresses shown are lab ranges.</p>
+  </section>
+
+  <!-- ============================ APT34 ============================ -->
+  <section class="mod" id="apt34" aria-labelledby="h-apt">
+    <div class="mod-head">
+      <span class="mod-id">// 04</span>
+      <h2 class="mod-name" id="h-apt">Profiling APT34 (OilRig)</h2>
+      <span class="mod-meta">MITRE ATT&amp;CK G0049 · threat intelligence</span>
+    </div>
+
+    <div class="apt-top">
+      <div class="prose">
+        <p>
+          A full profile of the Iranian espionage group tracked as <strong>APT34 / OilRig</strong>:
+          tradecraft mapped across the kill chain, three malware families taken apart, and the
+          command-and-control infrastructure characterised.
+        </p>
+        <p>
+          Intelligence is only worth the detection it produces, so the deliverable was not the report —
+          it was a set of <strong>actionable detection rules</strong> and the matching
+          <strong>MITRE D3FEND</strong> countermeasures. The group's signature is DNS: both POWRUNER and
+          BONDUPDATER tunnel their C2 over DNS queries, which is exactly where the detection effort pays.
+        </p>
+        <p class="mod-meta" style="margin:0">Select a technique below to see what it looked like in this group's hands.</p>
+      </div>
+
+      <div class="malware">
+        <article class="mal">
+          <h4>POWRUNER</h4>
+          <p>Backdoor receiving tasking and returning output over DNS queries to attacker-controlled domains.</p>
+        </article>
+        <article class="mal">
+          <h4>BONDUPDATER</h4>
+          <p>PowerShell backdoor using a DNS tunnelling channel, with fallback across query types to survive filtering.</p>
+        </article>
+        <article class="mal">
+          <h4>RDAT</h4>
+          <p>Later-generation backdoor that hid its traffic in email and in image files — steganography as covert channel.</p>
+        </article>
+      </div>
+    </div>
+
+    <div class="matrix-scroll">
+      <div class="matrix">
+        <div class="tactic">
+          <h4>Initial access</h4>
+          <button type="button" class="tq" aria-expanded="false" data-d="Weaponised Office documents sent to targeted staff — the group's most consistent entry point, and the reason attachment detonation and macro policy carry so much weight against them."><span class="tid">T1566.001</span><span class="tnm">Spearphishing attachment</span></button>
+          <button type="button" class="tq" aria-expanded="false" data-d="Credential-harvesting links, often on infrastructure impersonating a service the target already uses."><span class="tid">T1566.002</span><span class="tnm">Spearphishing link</span></button>
+          <button type="button" class="tq" aria-expanded="false" data-d="Harvested credentials reused to log in as a legitimate user — no malware on the wire, which is why identity telemetry matters as much as endpoint telemetry."><span class="tid">T1078</span><span class="tnm">Valid accounts</span></button>
+        </div>
+        <div class="tactic">
+          <h4>Execution</h4>
+          <button type="button" class="tq" aria-expanded="false" data-d="Execution depends on the recipient opening the document and enabling content — the hinge the whole intrusion turns on."><span class="tid">T1204.002</span><span class="tnm">User execution: file</span></button>
+          <button type="button" class="tq" aria-expanded="false" data-d="PowerShell is the group's working language: BONDUPDATER is written in it, which makes script block logging one of the highest-yield log sources against them."><span class="tid">T1059.001</span><span class="tnm">PowerShell</span></button>
+          <button type="button" class="tq" aria-expanded="false" data-d="Native command shell used for discovery and to run tasking delivered by the backdoor."><span class="tid">T1059.003</span><span class="tnm">Windows command shell</span></button>
+        </div>
+        <div class="tactic">
+          <h4>Persistence</h4>
+          <button type="button" class="tq" aria-expanded="false" data-d="Scheduled tasks re-launch the backdoor on a timer — durable, ordinary-looking, and visible in Windows event 4698 if you are collecting it."><span class="tid">T1053.005</span><span class="tnm">Scheduled task</span></button>
+          <button type="button" class="tq" aria-expanded="false" data-d="Run keys for persistence across reboot: cheap for the attacker, and cheap to detect once registry auditing is on."><span class="tid">T1547.001</span><span class="tnm">Registry run keys</span></button>
+          <button type="button" class="tq" aria-expanded="false" data-d="Web shells dropped on internet-facing servers keep access alive even after the endpoint side is cleaned — the same technique the SQL injection scenario on this page ends in."><span class="tid">T1505.003</span><span class="tnm">Web shell</span></button>
+        </div>
+        <div class="tactic">
+          <h4>Credential access</h4>
+          <button type="button" class="tq" aria-expanded="false" data-d="Credential dumping from LSASS to collect the material that turns one host into many."><span class="tid">T1003.001</span><span class="tnm">LSASS memory</span></button>
+          <button type="button" class="tq" aria-expanded="false" data-d="Keylogging to capture what dumping cannot reach — credentials typed into applications rather than cached."><span class="tid">T1056.001</span><span class="tnm">Keylogging</span></button>
+        </div>
+        <div class="tactic">
+          <h4>Discovery</h4>
+          <button type="button" class="tq" aria-expanded="false" data-d="Account enumeration to find the identities worth taking next."><span class="tid">T1087</span><span class="tnm">Account discovery</span></button>
+          <button type="button" class="tq" aria-expanded="false" data-d="Mapping reachable hosts before moving — a burst of this from one workstation is a strong hunting signal."><span class="tid">T1018</span><span class="tnm">Remote system discovery</span></button>
+          <button type="button" class="tq" aria-expanded="false" data-d="Enumerating live connections to understand the segment and what the host can reach."><span class="tid">T1049</span><span class="tnm">Network connections</span></button>
+        </div>
+        <div class="tactic">
+          <h4>Lateral movement</h4>
+          <button type="button" class="tq" aria-expanded="false" data-d="RDP with stolen credentials — legitimate protocol, legitimate account, which is why this shows up as identity anomaly long before it shows up as malware."><span class="tid">T1021.001</span><span class="tnm">Remote desktop</span></button>
+          <button type="button" class="tq" aria-expanded="false" data-d="SMB and administrative shares used to move tooling between hosts."><span class="tid">T1021.002</span><span class="tnm">SMB / admin shares</span></button>
+        </div>
+        <div class="tactic">
+          <h4>Command &amp; control</h4>
+          <button type="button" class="tq sig" aria-expanded="false" data-d="The signature of this group. POWRUNER and BONDUPDATER both carry tasking and output inside DNS queries, because DNS leaves nearly every network unfiltered. Detection lives in the shape of the traffic, not the payload: query volume per domain, subdomain entropy, record types that a normal client never asks for."><span class="tid">T1071.004</span><span class="tnm">DNS tunnelling C2</span></button>
+          <button type="button" class="tq" aria-expanded="false" data-d="HTTP and HTTPS channels used where DNS is constrained."><span class="tid">T1071.001</span><span class="tnm">Web protocols</span></button>
+          <button type="button" class="tq" aria-expanded="false" data-d="Follow-on tooling pulled down after the foothold is established."><span class="tid">T1105</span><span class="tnm">Ingress tool transfer</span></button>
+        </div>
+        <div class="tactic">
+          <h4>Exfiltration</h4>
+          <button type="button" class="tq" aria-expanded="false" data-d="Collected data leaves down the same channel the tasking arrived on, which is what makes the C2 channel the single highest-value thing to detect."><span class="tid">T1041</span><span class="tnm">Exfiltration over C2</span></button>
+        </div>
+      </div>
+    </div>
+
+    <div class="tq-detail" id="tq-detail">
+      <b>T1071.004 · DNS tunnelling C2</b><br>
+      The signature of this group. POWRUNER and BONDUPDATER both carry tasking and output inside DNS
+      queries, because DNS leaves nearly every network unfiltered. Detection lives in the shape of the
+      traffic, not the payload: query volume per domain, subdomain entropy, record types that a normal
+      client never asks for.
+      <span class="d3">D3FEND countermeasures mapped: <em>DNS traffic analysis</em> · <em>network traffic filtering</em> · <em>executable allowlisting</em> · <em>credential hardening</em>.</span>
+    </div>
+  </section>
+
+  <!-- ============================ EXPERIENCE ============================ -->
+  <section class="mod" id="timeline" aria-labelledby="h-exp">
+    <div class="mod-head">
+      <span class="mod-id">// 05</span>
+      <h2 class="mod-name" id="h-exp">Experience</h2>
+      <span class="mod-meta">2023 — present</span>
+    </div>
+
+    <div class="tl">
+      <article class="job">
+        <div class="when">
+          Nov 2023 — present<br>
+          <span class="now"><span class="led" aria-hidden="true"></span>current</span>
+        </div>
+        <div>
+          <h3>Cyber Security Engineer</h3>
+          <div class="org">Global IT Vision <span class="loc">· Tunis, Tunisia</span></div>
+          <ul>
+            <li>Commission, tune and optimise the <strong>detection tooling across the client estate</strong> — use-case design, correlation rule authoring, false-positive reduction.</li>
+            <li>Qualify and investigate escalated alerts as <strong>L2</strong>: attack scenario reconstruction, root cause, containment, prioritised remediation, and reporting written for decision-makers.</li>
+            <li>Proactive <strong>threat hunting</strong>, security posture advisory, and upskilling of client teams.</li>
+          </ul>
+        </div>
+      </article>
+
+      <article class="job">
+        <div class="when">May — Jun 2024<br><span>internship</span></div>
+        <div>
+          <h3>Cybersecurity Intern</h3>
+          <div class="org">Pwn &amp; Patch Tunisia <span class="loc">· Tunis, Tunisia</span></div>
+          <ul>
+            <li><strong>Phishing simulation</strong> taken from target selection to final report: OSINT reconnaissance, custom scenarios and templates, campaigns triggered and tracked through an API.</li>
+            <li>Shipped fully functional and <strong>completely documented</strong> — a reproducible procedure plus the awareness debrief that makes the exercise worth running.</li>
+          </ul>
+        </div>
+      </article>
+
+      <article class="job">
+        <div class="when">Feb — Jul 2023<br><span>final-year, bachelor's</span></div>
+        <div>
+          <h3>Final-Year Intern</h3>
+          <div class="org">DEFENSYLAB <span class="loc">· Tunis, Tunisia</span></div>
+          <ul>
+            <li>Built a <strong>cybersecurity training platform</strong> — an Odoo-based LMS for internal curricula: module catalogue, learner paths, progress tracking.</li>
+            <li><strong>Hands-on labs</strong> attached to each module, driven from requirements through to production release.</li>
+          </ul>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <!-- ============================ ARSENAL ============================ -->
+  <section class="mod" id="arsenal" aria-labelledby="h-arsenal">
+    <div class="mod-head">
+      <span class="mod-id">// 06</span>
+      <h2 class="mod-name" id="h-arsenal">Arsenal</h2>
+      <span class="mod-meta">hands-on, in production or in the lab</span>
+    </div>
+
+    <dl class="skills">
+      <div class="skill">
+        <dt>Blue team / SOC</dt>
+        <dd>
+          <span class="tag key">L2 SOC analysis</span><span class="tag key">SIEM monitoring</span>
+          <span class="tag key">Threat hunting</span><span class="tag key">Incident response</span>
+          <span class="tag">NIST SP 800-61</span><span class="tag">Digital forensics</span>
+          <span class="tag">Detection engineering</span>
+        </dd>
+      </div>
+      <div class="skill">
+        <dt>Platforms</dt>
+        <dd>
+          <span class="tag key">Darktrace NDR</span><span class="tag key">LogRhythm SIEM</span>
+          <span class="tag key">CrowdStrike Falcon XDR</span><span class="tag key">Wazuh</span>
+          <span class="tag">Suricata</span><span class="tag">Palo Alto NGFW</span>
+          <span class="tag">TheHive</span><span class="tag">Cortex</span><span class="tag">MISP</span>
+          <span class="tag">Zabbix</span><span class="tag">Prometheus</span><span class="tag">Grafana</span>
+          <span class="tag">n8n</span>
+        </dd>
+      </div>
+      <div class="skill">
+        <dt>CTI &amp; detection</dt>
+        <dd>
+          <span class="tag key">MITRE ATT&amp;CK</span><span class="tag">MITRE D3FEND</span>
+          <span class="tag">OpenCTI</span><span class="tag">APT profiling</span>
+          <span class="tag">IoC analysis</span><span class="tag">VirusTotal</span><span class="tag">AbuseIPDB</span>
+        </dd>
+      </div>
+      <div class="skill">
+        <dt>Offensive</dt>
+        <dd>
+          <span class="tag">Penetration testing</span><span class="tag">OSINT</span>
+          <span class="tag">Phishing simulation</span><span class="tag">Burp Suite</span>
+          <span class="tag">Metasploit</span><span class="tag">Nmap</span>
+          <span class="tag">BloodHound</span><span class="tag">Hashcat</span>
+        </dd>
+      </div>
+      <div class="skill">
+        <dt>Standards</dt>
+        <dd>
+          <span class="tag">NIST SP 800-61</span><span class="tag">ISO/IEC 27001</span>
+          <span class="tag">NIST CSF</span><span class="tag">CIS Controls</span>
+          <span class="tag">OWASP</span><span class="tag">PCI-DSS</span>
+        </dd>
+      </div>
+      <div class="skill">
+        <dt>Dev &amp; systems</dt>
+        <dd>
+          <span class="tag key">Python</span><span class="tag">Bash</span><span class="tag">JavaScript</span>
+          <span class="tag">Node.js</span><span class="tag">SQL</span>
+          <span class="tag">Linux (RHEL, Kali, Parrot)</span><span class="tag">Windows Server</span>
+          <span class="tag">Active Directory</span>
+        </dd>
+      </div>
+    </dl>
+
+    <div class="prose" style="margin-top:26px">
+      <p>
+        Alongside the two projects above: automated DNS and IP blocking driven from threat intelligence
+        feeds (Python + PostgreSQL), AES, RSA and ECC implemented from the specifications rather than
+        called from a library, and secure web applications in MERN and PHP/MySQL.
+      </p>
+    </div>
+  </section>
+
+  <!-- ============================ CERTS ============================ -->
+  <section class="mod" id="certs" aria-labelledby="h-certs">
+    <div class="mod-head">
+      <span class="mod-id">// 07</span>
+      <h2 class="mod-name" id="h-certs">Certifications</h2>
+      <span class="mod-meta"><span id="cert-count">18</span> held · 2023 — 2026</span>
+    </div>
+
+    <div class="cert-filter" role="group" aria-label="Filter certifications by domain">
+      <button type="button" class="chip" data-filter="all" aria-pressed="true">all · 18</button>
+      <button type="button" class="chip" data-filter="dfir" aria-pressed="false">DFIR &amp; IR · 5</button>
+      <button type="button" class="chip" data-filter="defense" aria-pressed="false">defense &amp; platforms · 8</button>
+      <button type="button" class="chip" data-filter="offense" aria-pressed="false">offensive · 4</button>
+      <button type="button" class="chip" data-filter="systems" aria-pressed="false">systems · 1</button>
+    </div>
+
+    <div class="certs" id="cert-grid">
+      <div class="cert" data-domain="dfir"><span class="ac">eCDFP</span><span class="yr">2026</span><span class="full">Digital Forensics Professional · INE</span></div>
+      <div class="cert" data-domain="dfir"><span class="ac">eCTHP</span><span class="yr">2026</span><span class="full">Threat Hunting Professional · INE</span></div>
+      <div class="cert" data-domain="dfir"><span class="ac">eCIR</span><span class="yr">2026</span><span class="full">Incident Responder · INE</span></div>
+      <div class="cert" data-domain="defense"><span class="ac">eEDA</span><span class="yr">2026</span><span class="full">Enterprise Defense Administrator · INE</span></div>
+      <div class="cert" data-domain="defense"><span class="ac">CCFA</span><span class="yr">2026</span><span class="full">Certified Falcon Administrator · CrowdStrike</span></div>
+      <div class="cert" data-domain="offense"><span class="ac">eJPTv2</span><span class="yr">2025</span><span class="full">Junior Penetration Tester · INE</span></div>
+      <div class="cert" data-domain="offense"><span class="ac">CEH</span><span class="yr">2025</span><span class="full">Certified Ethical Hacker · EC-Council</span></div>
+      <div class="cert" data-domain="dfir"><span class="ac">CSA</span><span class="yr">2025</span><span class="full">Certified SOC Analyst · EC-Council</span></div>
+      <div class="cert" data-domain="defense"><span class="ac">LRSA</span><span class="yr">2025</span><span class="full">LogRhythm Security Analyst</span></div>
+      <div class="cert" data-domain="defense"><span class="ac">LRPA</span><span class="yr">2025</span><span class="full">LogRhythm Platform Administrator</span></div>
+      <div class="cert" data-domain="defense"><span class="ac">Darktrace</span><span class="yr">2025</span><span class="full">Certified Cyber Engineer</span></div>
+      <div class="cert" data-domain="defense"><span class="ac">Darktrace</span><span class="yr">2025</span><span class="full">Threat Visualizer Essentials</span></div>
+      <div class="cert" data-domain="offense"><span class="ac">CNSP</span><span class="yr">2025</span><span class="full">Certified Network Security Practitioner</span></div>
+      <div class="cert" data-domain="systems"><span class="ac">RHCSA</span><span class="yr">2024</span><span class="full">Red Hat Certified System Administrator</span></div>
+      <div class="cert" data-domain="dfir"><span class="ac">BTJA</span><span class="yr">2024</span><span class="full">Blue Team Junior Analyst</span></div>
+      <div class="cert" data-domain="defense"><span class="ac">CPP</span><span class="yr">2024</span><span class="full">ManageEngine PAM360</span></div>
+      <div class="cert" data-domain="defense"><span class="ac">CPP</span><span class="yr">2024</span><span class="full">ManageEngine Key Manager Plus</span></div>
+      <div class="cert" data-domain="offense"><span class="ac">THM</span><span class="yr">2023</span><span class="full">Pentesting · Pentest+ · Web Fundamentals · TryHackMe</span></div>
+    </div>
+
+    <div class="mod" id="education" style="padding-block:46px 0">
+      <div class="mod-head">
+        <span class="mod-id">// 08</span>
+        <h2 class="mod-name">Education</h2>
+      </div>
+      <div class="edu">
+        <div class="deg">
+          <div>
+            <div class="d">Engineering Degree — Network &amp; Information Systems Security</div>
+            <div class="i">TEK-UP University, Tunis</div>
+          </div>
+          <div class="y">2023 — 2026</div>
+        </div>
+        <div class="deg">
+          <div>
+            <div class="d">SOC Analyst certification track</div>
+            <div class="i">Clevory Training, Tunis <span style="color:var(--ink-3)">— CEH, CSA, CyberOps, ISO 27001</span></div>
+          </div>
+          <div class="y">2024</div>
+        </div>
+        <div class="deg">
+          <div>
+            <div class="d">Bachelor's Degree — Telecommunications &amp; Network Security</div>
+            <div class="i">ISET'COM, Tunis</div>
+          </div>
+          <div class="y">2020 — 2023</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================ CONTACT ============================ -->
+  <section class="contact" id="contact" aria-labelledby="h-contact">
+    <h2 id="h-contact">Hiring for a SOC?</h2>
+    <p>
+      I am open to SOC analyst, incident response, threat hunting and detection engineering roles —
+      in Tunisia, relocating to Europe, Canada or the wider EMEA region, or fully remote.
+      One month's notice.
+    </p>
+
+    <dl class="contact-rows">
+      <div class="crow"><dt>email</dt><dd><a href="mailto:rayengader9@gmail.com">rayengader9@gmail.com</a></dd></div>
+      <div class="crow"><dt>phone</dt><dd><a href="tel:+21627805884">+216 27 80 58 84</a></dd></div>
+      <div class="crow"><dt>linkedin</dt><dd><a href="https://www.linkedin.com/in/rayengader" target="_blank" rel="noopener">linkedin.com/in/rayengader</a></dd></div>
+      <div class="crow"><dt>github</dt><dd><a href="https://github.com/rayengader" target="_blank" rel="noopener">github.com/rayengader</a></dd></div>
+      <div class="crow"><dt>résumé</dt><dd><a href="assets/cv/CV_Rayen_Gader_EN.pdf" target="_blank" rel="noopener">English (PDF)</a> · <a href="assets/cv/CV_Rayen_Gader_FR.pdf" target="_blank" rel="noopener">Français (PDF)</a></dd></div>
+      <div class="crow"><dt>location</dt><dd>Ariana, Tunisia <span style="color:var(--ink-3)">· GMT+1</span></dd></div>
+    </dl>
+  </section>
+
+  <footer>
+    <span>Rayen Gader · Cyber Security Engineer</span>
+    <span>Built from scratch — no template, no framework.</span>
+  </footer>
+
+</main>
+
+<script src="assets/js/main.js"></script>
+</body>
+</html>
