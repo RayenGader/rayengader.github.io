@@ -1,10 +1,10 @@
 /* =============================================================
    rayengader.github.io — page behaviour
-   No framework, no build step. Four things happen here:
-     1. the hero terminal boots
-     2. the status bar tracks which section you are reading
-     3. the SOC topology replays a real attack scenario
-     4. the ATT&CK matrix and the certification grid respond to input
+
+   No framework, no build step. Three things happen here:
+     1. the navigation tracks which section you are reading
+     2. the attack simulation replays a scenario over the topology
+     3. the ATT&CK matrix and the credential filter respond to input
    ============================================================= */
 (function () {
   "use strict";
@@ -18,22 +18,7 @@
   }
 
   /* ---------------------------------------------------------------
-     1. Boot the hero terminal
-     Lines are in the HTML already, so the page reads correctly with
-     no JS at all; this only staggers their arrival.
-     --------------------------------------------------------------- */
-  function bootTerminal() {
-    var term = $("#boot .term-body");
-    if (!term || reduced) return;
-    var lines = $$(".ln", term);
-    term.classList.add("is-typing");
-    lines.forEach(function (ln, i) {
-      setTimeout(function () { ln.classList.add("shown"); }, 70 + i * 85);
-    });
-  }
-
-  /* ---------------------------------------------------------------
-     2. Section tracking in the status bar
+     1. Section tracking
      --------------------------------------------------------------- */
   function trackSections() {
     var links = $$(".navlinks a");
@@ -56,17 +41,17 @@
       });
       links.forEach(function (a) { a.classList.remove("is-active"); });
       if (best && byId[best] && bestRatio > 0.02) byId[best].classList.add("is-active");
-    }, { rootMargin: "-56px 0px -55% 0px", threshold: [0, 0.02, 0.15, 0.4, 0.8] });
+    }, { rootMargin: "-64px 0px -55% 0px", threshold: [0, 0.02, 0.15, 0.4, 0.8] });
 
     targets.forEach(function (t) { io.observe(t); });
   }
 
   /* ---------------------------------------------------------------
-     3. Attack replay over the SOC topology
+     2. Attack simulation
 
-     Each step carries the second it happens at, the edge the traffic
-     travels, the component that changes state, and the log line the
-     component would actually write. Timings are the ones measured on
+     Each step carries the second it happens at, the link the traffic
+     travels, the component that changes state, and the event that
+     component would actually record. Timings are the ones measured on
      the build: both scenarios reach a contextualised alert well inside
      a minute, with no analyst touching anything.
      --------------------------------------------------------------- */
@@ -75,47 +60,47 @@
 
   var SCENARIOS = {
     ftp: {
-      label: "T1110.001 · FTP brute force",
-      mttd: "MTTD 00:09",
-      rule: "wazuh 100210 · level 12",
-      kase: "TheHive #0142 · HIGH",
-      out: "contextualised alert · no human action",
+      label: "FTP brute force",
+      mttd: "00:09",
+      rule: "Wazuh 100210 · level 12",
+      kase: "TheHive #0142 · High",
+      out: "Contextualised alert, no human action",
       end: 21,
       steps: [
-        { t: 0,  path: "pA",  node: "n-atk",  state: "crit", src: "ngfw",     msg: "session 203.0.113.44 → 10.10.20.15:21 · ftp permitted to DMZ" },
-        { t: 2,  path: "pB2", node: "n-ftp",  state: "crit", src: "ftp-srv",  msg: "12 failed logins in 8s · username rotation, single source" },
-        { t: 4,  path: "pC2", node: "n-suri", state: "hot",  src: "suricata", msg: "ET SCAN Potential FTP Brute-Force attempt · sid 2002383" },
-        { t: 7,  path: "pD1", node: "n-wazuh",state: "hot",  src: "wazuh",    msg: "rule 11402 matched ×12 · 2 agents reporting the same source" },
-        { t: 9,  node: "n-wazuh", state: "hot", cls: "hi", detect: true, src: "wazuh", msg: "correlation 100210 fired · level 12 · T1110.001 — DETECTED" },
-        { t: 11, path: "pE",  node: "n-hive",  state: "crit", cls: "crit", src: "thehive", msg: "case #0142 opened · severity HIGH · observable 203.0.113.44" },
-        { t: 13, path: "pF",  node: "n-cortex",state: "hot",  src: "cortex",  msg: "AbuseIPDB 97% confidence · VirusTotal 14/94 · known scanner" },
-        { t: 15, path: "pG",  node: "n-misp",  state: "hot",  src: "misp",    msg: "event 1183 published · tlp:amber · tag ftp-bruteforce" },
-        { t: 17, path: "pH",  node: "n-n8n",   state: "hot",  src: "n8n",     msg: "contextualised alert dispatched to the SOC channel" },
-        { t: 19, node: "n-ftp", state: "done", cls: "ok", src: "response",    msg: "source blocked at the NGFW · account lockout verified · case closed" }
+        { t: 0,  path: "pA",  node: "n-atk",   state: "crit", src: "Firewall",    msg: "Session 203.0.113.44 → 10.10.20.15:21 · FTP permitted to DMZ" },
+        { t: 2,  path: "pB2", node: "n-ftp",   state: "crit", sev: "critical", src: "FTP server", msg: "12 failed logins in 8 seconds · username rotation from a single source" },
+        { t: 4,  path: "pC2", node: "n-suri",  state: "hot",  src: "Suricata",    msg: "ET SCAN Potential FTP Brute-Force attempt · sid 2002383" },
+        { t: 7,  path: "pD1", node: "n-wazuh", state: "hot",  src: "Wazuh",       msg: "Rule 11402 matched 12 times · two agents reporting the same source" },
+        { t: 9,  node: "n-wazuh", state: "hot", sev: "high", detect: true, src: "Wazuh", msg: "Correlation rule 100210 fired · level 12 · T1110.001 — detected" },
+        { t: 11, path: "pE",  node: "n-hive",  state: "crit", sev: "critical", src: "TheHive", msg: "Case #0142 opened · severity High · observable 203.0.113.44" },
+        { t: 13, path: "pF",  node: "n-cortex",state: "hot",  src: "Cortex",      msg: "AbuseIPDB 97% confidence · VirusTotal 14/94 · known scanner" },
+        { t: 15, path: "pG",  node: "n-misp",  state: "hot",  src: "MISP",        msg: "Event 1183 published · tlp:amber · tagged ftp-bruteforce" },
+        { t: 17, path: "pH",  node: "n-n8n",   state: "hot",  src: "n8n",         msg: "Contextualised alert dispatched to the SOC channel" },
+        { t: 19, node: "n-ftp", state: "done", sev: "resolved", src: "Response",  msg: "Source blocked at the firewall · account lockout verified · case closed" }
       ]
     },
 
     web: {
-      label: "T1190 → T1505.003 · SQL injection to web shell",
-      mttd: "MTTD 00:16",
-      rule: "wazuh 100315 · level 14",
-      kase: "TheHive #0143 · CRITICAL",
-      out: "host contained via Falcon · web shell quarantined",
+      label: "SQL injection to web shell",
+      mttd: "00:16",
+      rule: "Wazuh 100315 · level 14",
+      kase: "TheHive #0143 · Critical",
+      out: "Host contained via Falcon, web shell quarantined",
       end: 28,
       steps: [
-        { t: 0,  path: "pA",  node: "n-atk",  state: "crit", src: "ngfw",     msg: "session 203.0.113.44 → 10.10.20.10:443 · https permitted to DMZ" },
-        { t: 2,  path: "pB1", node: "n-web",  state: "crit", src: "web-srv",  msg: "POST /login.php · payload ' UNION SELECT 1,2,version()--" },
-        { t: 4,  path: "pC1", node: "n-suri", state: "hot",  src: "suricata", msg: "ET WEB_SERVER SQL Injection Select From · sid 2006446" },
-        { t: 7,  path: "pB1", node: "n-web",  state: "crit", src: "web-srv",  msg: "POST /upload.php → uploads/cmd.php · 200 OK" },
-        { t: 9,  path: "pC1", node: "n-suri", state: "hot",  src: "suricata", msg: "ET WEB_SERVER PHP tags in HTTP POST · possible web shell upload" },
-        { t: 11, path: "pD1", node: "n-wazuh",state: "hot",  src: "wazuh",    msg: "syscheck: new file /var/www/html/uploads/cmd.php · 644 www-data" },
-        { t: 14, path: "pC3", node: "n-cs",   state: "crit", cls: "crit", src: "crowdstrike", msg: "process tree apache2 → sh -c "id;uname -a" · detection: Web Shell" },
-        { t: 16, path: "pD2", node: "n-wazuh",state: "hot",  cls: "hi", detect: true, src: "wazuh", msg: "correlation 100315 fired · level 14 · T1190 → T1505.003 — DETECTED" },
-        { t: 18, path: "pE",  node: "n-hive",  state: "crit", cls: "crit", src: "thehive", msg: "case #0143 opened · severity CRITICAL · 3 observables" },
-        { t: 20, path: "pF",  node: "n-cortex",state: "hot",  src: "cortex",  msg: "VirusTotal 31/94 on cmd.php · AbuseIPDB 97% on the source" },
-        { t: 22, path: "pG",  node: "n-misp",  state: "hot",  src: "misp",    msg: "IoC set published · file hash, source IP, URI pattern" },
-        { t: 24, path: "pH",  node: "n-n8n",   state: "hot",  src: "n8n",     msg: "contextualised alert dispatched to the SOC channel" },
-        { t: 26, node: "n-web", state: "done", cls: "ok", src: "response",    msg: "host network-contained via Falcon · web shell quarantined · case closed" }
+        { t: 0,  path: "pA",  node: "n-atk",   state: "crit", src: "Firewall",   msg: "Session 203.0.113.44 → 10.10.20.10:443 · HTTPS permitted to DMZ" },
+        { t: 2,  path: "pB1", node: "n-web",   state: "crit", sev: "critical", src: "Web server", msg: "POST /login.php · payload ' UNION SELECT 1,2,version()--" },
+        { t: 4,  path: "pC1", node: "n-suri",  state: "hot",  src: "Suricata",   msg: "ET WEB_SERVER SQL Injection Select From · sid 2006446" },
+        { t: 7,  path: "pB1", node: "n-web",   state: "crit", sev: "critical", src: "Web server", msg: "POST /upload.php → uploads/cmd.php · 200 OK" },
+        { t: 9,  path: "pC1", node: "n-suri",  state: "hot",  src: "Suricata",   msg: "ET WEB_SERVER PHP tags in HTTP POST · possible web shell upload" },
+        { t: 11, path: "pD1", node: "n-wazuh", state: "hot",  src: "Wazuh",      msg: "File integrity: new file /var/www/html/uploads/cmd.php · 644 www-data" },
+        { t: 14, path: "pC3", node: "n-cs",    state: "crit", sev: "critical", src: "CrowdStrike", msg: "Process tree apache2 → sh -c "id;uname -a" · detection: Web Shell" },
+        { t: 16, path: "pD2", node: "n-wazuh", state: "hot",  sev: "high", detect: true, src: "Wazuh", msg: "Correlation rule 100315 fired · level 14 · T1190 → T1505.003 — detected" },
+        { t: 18, path: "pE",  node: "n-hive",  state: "crit", sev: "critical", src: "TheHive", msg: "Case #0143 opened · severity Critical · three observables" },
+        { t: 20, path: "pF",  node: "n-cortex",state: "hot",  src: "Cortex",     msg: "VirusTotal 31/94 on cmd.php · AbuseIPDB 97% on the source" },
+        { t: 22, path: "pG",  node: "n-misp",  state: "hot",  src: "MISP",       msg: "Indicator set published · file hash, source address, URI pattern" },
+        { t: 24, path: "pH",  node: "n-n8n",   state: "hot",  src: "n8n",        msg: "Contextualised alert dispatched to the SOC channel" },
+        { t: 26, node: "n-web", state: "done", sev: "resolved", src: "Response", msg: "Host network-contained via Falcon · web shell quarantined · case closed" }
       ]
     }
   };
@@ -148,15 +133,24 @@
     });
   }
 
-  function logRow(step) {
-    var row = document.createElement("div");
-    row.className = "row" + (step.cls ? " " + step.cls : "");
-    row.innerHTML =
-      '<span class="t">t+' + mmss(step.t) + '</span>' +
-      '<span class="src">' + step.src + '</span>' +
-      '<span class="msg"></span>';
-    row.lastChild.textContent = step.msg;
-    return row;
+  function eventRow(step) {
+    var li = document.createElement("li");
+    li.className = "ev";
+    li.setAttribute("data-sev", step.sev || "info");
+    li.innerHTML =
+      '<span class="ev-t">' + mmss(step.t) + '</span>' +
+      '<span class="ev-mark" aria-hidden="true"></span>' +
+      '<span class="ev-body"><span class="ev-src"></span><span class="ev-msg"></span></span>';
+    $(".ev-src", li).textContent = step.src;
+    $(".ev-msg", li).textContent = step.msg;
+    return li;
+  }
+
+  function setClock(sec, sc, detected) {
+    var el = $("#clock");
+    if (!el) return;
+    el.innerHTML = "Elapsed <b>" + mmss(sec) + "</b>" +
+      (detected ? ' <span style="color:var(--blue)">· detected ' + sc.mttd + "</span>" : "");
   }
 
   function movePacket(pathId, dur) {
@@ -176,28 +170,15 @@
     })(t0);
   }
 
-  function applyStep(step, log) {
-    if (step.node && step.state) {
-      var n = document.getElementById(step.node);
-      if (n) n.setAttribute("class", "node " + step.state);
-    }
-    if (step.path) movePacket(step.path, 520);
-    if (log) {
-      log.appendChild(logRow(step));
-      log.scrollTop = log.scrollHeight;
-    }
-  }
-
-  function setVerdict(sc) {
+  function setResults(sc) {
     $("#v-mttd").textContent = sc.mttd;
     $("#v-rule").textContent = sc.rule;
     $("#v-case").textContent = sc.kase;
     $("#v-out").textContent = sc.out;
   }
 
-  /* Draw the scenario in its finished state, with no animation. This is
-     what the page shows at rest, and what a reader with reduced motion
-     gets when they press replay. */
+  /* The finished state, drawn with no animation. This is what the page
+     shows at rest, and what a reader with reduced motion gets. */
   function renderStatic(key) {
     var sc = SCENARIOS[key];
     var log = $("#log");
@@ -210,37 +191,33 @@
         var n = document.getElementById(step.node);
         if (n) n.setAttribute("class", "node " + step.state);
       }
-      log.appendChild(logRow(step));
+      log.appendChild(eventRow(step));
     });
-    log.scrollTop = 0;
-    setVerdict(sc);
-    var clock = $("#clock");
-    if (clock) clock.innerHTML = "t+<b>" + mmss(sc.end) + "</b> · " + sc.mttd.toLowerCase();
+    log.parentNode.scrollTop = 0;
+    setResults(sc);
+    setClock(sc.end, sc, true);
   }
 
   function run(key) {
     var sc = SCENARIOS[key];
     var log = $("#log");
-    var clock = $("#clock");
+    var feed = log ? log.parentNode : null;
     var btn = $("#replay");
 
     if (reduced) { renderStatic(key); return; }
 
     clearRun();
     resetNodes();
-    if (log) log.innerHTML = '<div class="idle">// replaying ' + sc.label + " …</div>";
-    setVerdict(sc);
-    if (btn) { btn.disabled = true; btn.textContent = "▶ running…"; }
+    if (log) log.innerHTML = '<li class="ev-idle">Replaying ' + sc.label + "…</li>";
+    setResults(sc);
+    if (btn) { btn.disabled = true; btn.textContent = "Running…"; }
 
     var t0 = performance.now();
     var detected = false;
 
     (function tick(now) {
       var sec = Math.min(sc.end, (now - t0) / MS_PER_SEC);
-      if (clock) {
-        clock.innerHTML = "t+<b>" + mmss(sec) + "</b>" +
-          (detected ? " · " + sc.mttd.toLowerCase() : " · watching");
-      }
+      setClock(sec, sc, detected);
       if (sec < sc.end) rafId = requestAnimationFrame(tick);
     })(t0);
 
@@ -248,27 +225,33 @@
       timers.push(setTimeout(function () {
         if (i === 0 && log) log.innerHTML = "";
         if (step.detect) detected = true;
-        applyStep(step, log);
+        if (step.node && step.state) {
+          var n = document.getElementById(step.node);
+          if (n) n.setAttribute("class", "node " + step.state);
+        }
+        if (step.path) movePacket(step.path, 520);
+        if (log) {
+          log.appendChild(eventRow(step));
+          if (feed) feed.scrollTop = feed.scrollHeight;
+        }
       }, step.t * MS_PER_SEC + 120));
     });
 
     timers.push(setTimeout(function () {
-      if (clock) clock.innerHTML = "t+<b>" + mmss(sc.end) + "</b> · " + sc.mttd.toLowerCase();
-      if (btn) { btn.disabled = false; btn.textContent = "▶ Replay attack"; }
+      setClock(sc.end, sc, true);
+      if (btn) { btn.disabled = false; btn.textContent = "Run simulation"; }
     }, sc.end * MS_PER_SEC + 240));
   }
 
-  function wireConsole() {
-    var picks = $$(".scenario-pick .chip");
+  function wireSimulation() {
+    var picks = $$(".segmented button[data-scenario]");
     var btn = $("#replay");
     if (!btn) return;
 
-    picks.forEach(function (chip) {
-      chip.addEventListener("click", function () {
-        current = chip.getAttribute("data-scenario");
-        picks.forEach(function (c) {
-          c.setAttribute("aria-pressed", String(c === chip));
-        });
+    picks.forEach(function (tab) {
+      tab.addEventListener("click", function () {
+        current = tab.getAttribute("data-scenario");
+        picks.forEach(function (t) { t.setAttribute("aria-pressed", String(t === tab)); });
         run(current);
       });
     });
@@ -279,7 +262,7 @@
   }
 
   /* ---------------------------------------------------------------
-     4a. ATT&CK matrix — one technique open at a time
+     3a. ATT&CK matrix — one technique open at a time
      --------------------------------------------------------------- */
   function wireMatrix() {
     var detail = $("#tq-detail");
@@ -290,25 +273,17 @@
       b.addEventListener("click", function () {
         buttons.forEach(function (o) { o.setAttribute("aria-expanded", "false"); });
         b.setAttribute("aria-expanded", "true");
-
-        var id = $(".tid", b).textContent;
-        var name = $(".tnm", b).textContent;
-        detail.innerHTML =
-          "<b></b><br><span class=\"body\"></span>" +
-          '<span class="d3">D3FEND countermeasures mapped: <em>DNS traffic analysis</em> · ' +
-          "<em>network traffic filtering</em> · <em>executable allowlisting</em> · " +
-          "<em>credential hardening</em>.</span>";
-        $("b", detail).textContent = id + " · " + name;
+        $("b", detail).textContent = $(".tid", b).textContent + " · " + $(".tnm", b).textContent;
         $(".body", detail).textContent = b.getAttribute("data-d");
       });
     });
   }
 
   /* ---------------------------------------------------------------
-     4b. Certification grid filter
+     3b. Credential filter
      --------------------------------------------------------------- */
   function wireCerts() {
-    var chips = $$(".cert-filter .chip");
+    var chips = $$(".filter");
     var cards = $$("#cert-grid .cert");
     var count = $("#cert-count");
     if (!chips.length || !cards.length) return;
@@ -316,9 +291,7 @@
     chips.forEach(function (chip) {
       chip.addEventListener("click", function () {
         var f = chip.getAttribute("data-filter");
-        chips.forEach(function (c) {
-          c.setAttribute("aria-pressed", String(c === chip));
-        });
+        chips.forEach(function (c) { c.setAttribute("aria-pressed", String(c === chip)); });
         var shown = 0;
         cards.forEach(function (card) {
           var match = f === "all" || card.getAttribute("data-domain") === f;
@@ -331,9 +304,8 @@
   }
 
   /* --------------------------------------------------------------- */
-  bootTerminal();
   trackSections();
-  wireConsole();
+  wireSimulation();
   wireMatrix();
   wireCerts();
 })();

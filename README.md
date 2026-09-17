@@ -40,27 +40,27 @@ follows within a minute.
 **A new certification.** Add one row to the grid in `index.html` under
 `<div class="certs" id="cert-grid">`, copying the shape of the row above it, and set
 `data-domain` to one of `dfir`, `defense`, `offense`, `systems`. Then bump the two
-counts that are written by hand: the `all · 18` chip label and the `18` inside
+counts that are written by hand: the `All 18` filter label and the `18` inside
 `<span id="cert-count">`.
 
-**A new role or project.** The experience entries live under `<section id="timeline">`;
-copy an `<article class="job">` block.
+**A new role or project.** The experience entries live under `<section id="experience">`;
+copy an `<article class="role">` block.
 
 **A new résumé PDF.** Overwrite the files in `assets/cv/` keeping the same filenames and
 nothing else needs to change.
 
 **Colours and type.** Every colour is a custom property at the top of `style.css`. The
-accent is amber `#FFB020` — the colour of an alert. Changing that one value re-themes
+accent is blue `#4D8DFF`, with `#2563EB` for filled buttons. Changing those re-themes
 the page.
 
 ## Things worth adding later
 
 - **TryHackMe and HackTheBox profile links.** The site states "Top 1% globally" but does
   not link the profile, because the handle was not to hand when it was built. Add it to
-  the contact list in `index.html` under `<dl class="contact-rows">`.
+  the details list in `index.html` under `<dl class="details">`.
 - **The PFE report.** `Rapport_PFE_SOC.pdf` was deliberately left out — check it for
   client or internal detail first, then drop it in `assets/cv/` and link it from the
-  `soc-build` section if it is safe to publish.
+  `work` section if it is safe to publish.
 - **A social preview image.** GitHub Pages will serve one from `assets/og.png`
   (1200×630); add `<meta property="og:image">` to the head so LinkedIn shows a card
   instead of a bare link.
