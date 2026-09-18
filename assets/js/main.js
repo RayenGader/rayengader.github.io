@@ -94,7 +94,7 @@
         { t: 7,  path: "pB1", node: "n-web",   state: "crit", sev: "critical", src: "Web server", msg: "POST /upload.php → uploads/cmd.php · 200 OK" },
         { t: 9,  path: "pC1", node: "n-suri",  state: "hot",  src: "Suricata",   msg: "ET WEB_SERVER PHP tags in HTTP POST · possible web shell upload" },
         { t: 11, path: "pD1", node: "n-wazuh", state: "hot",  src: "Wazuh",      msg: "File integrity: new file /var/www/html/uploads/cmd.php · 644 www-data" },
-        { t: 14, path: "pC3", node: "n-cs",    state: "crit", sev: "critical", src: "CrowdStrike", msg: "Process tree apache2 → sh -c "id;uname -a" · detection: Web Shell" },
+        { t: 14, path: "pC3", node: "n-cs",    state: "crit", sev: "critical", src: "CrowdStrike", msg: "Process tree apache2 → sh -c \"id;uname -a\" · detection: Web Shell" },
         { t: 16, path: "pD2", node: "n-wazuh", state: "hot",  sev: "high", detect: true, src: "Wazuh", msg: "Correlation rule 100315 fired · level 14 · T1190 → T1505.003 — detected" },
         { t: 18, path: "pE",  node: "n-hive",  state: "crit", sev: "critical", src: "TheHive", msg: "Case #0143 opened · severity Critical · three observables" },
         { t: 20, path: "pF",  node: "n-cortex",state: "hot",  src: "Cortex",     msg: "VirusTotal 31/94 on cmd.php · AbuseIPDB 97% on the source" },
@@ -110,6 +110,7 @@
 
   var timers = [];
   var rafId = null;
+  var packetRaf = null;
   var current = "ftp";
 
   function mmss(sec) {
@@ -122,6 +123,7 @@
     timers.forEach(clearTimeout);
     timers = [];
     if (rafId) { cancelAnimationFrame(rafId); rafId = null; }
+    if (packetRaf) { cancelAnimationFrame(packetRaf); packetRaf = null; }
     var packet = $("#packet");
     if (packet) packet.setAttribute("opacity", "0");
   }
@@ -157,6 +159,7 @@
     var p = document.getElementById(pathId);
     var c = $("#packet");
     if (!p || !c || reduced || typeof p.getTotalLength !== "function") return;
+    if (packetRaf) cancelAnimationFrame(packetRaf);
     var len = p.getTotalLength();
     var t0 = performance.now();
     c.setAttribute("opacity", "1");
@@ -165,8 +168,8 @@
       var pt = p.getPointAtLength(len * k);
       c.setAttribute("cx", pt.x);
       c.setAttribute("cy", pt.y);
-      if (k < 1) requestAnimationFrame(frame);
-      else c.setAttribute("opacity", "0");
+      if (k < 1) packetRaf = requestAnimationFrame(frame);
+      else { packetRaf = null; c.setAttribute("opacity", "0"); }
     })(t0);
   }
 
@@ -178,7 +181,7 @@
   }
 
   /* The finished state, drawn with no animation. This is what the page
-     shows at rest, and what a reader with reduced motion gets. */
+     shows at rest, before anyone presses Run. */
   function renderStatic(key) {
     var sc = SCENARIOS[key];
     var log = $("#log");
@@ -204,8 +207,8 @@
     var feed = log ? log.parentNode : null;
     var btn = $("#replay");
 
-    if (reduced) { renderStatic(key); return; }
-
+    /* Reduced motion still replays step by step, so pressing Run visibly
+       does something; only the moving packet is skipped (movePacket). */
     clearRun();
     resetNodes();
     if (log) log.innerHTML = '<li class="ev-idle">Replaying ' + sc.label + "…</li>";
