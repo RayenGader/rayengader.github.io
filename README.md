@@ -1,6 +1,6 @@
 # rayengader.github.io
 
-Portfolio site for Rayen Gader — Cyber Security Engineer, L2 SOC analyst.
+Portfolio site for Rayen Gader - Cyber Security Engineer, L2 SOC analyst.
 
 Static HTML, CSS and vanilla JavaScript. No framework, no build step, no dependencies.
 Two web fonts from Google Fonts; everything else ships with the page.
@@ -18,7 +18,7 @@ assets/cv/               résumé PDFs (EN + FR)
 The repository name has to be **exactly** `rayengader.github.io` for the site to
 appear at that address.
 
-1. Create the repository at <https://github.com/new> — owner `rayengader`,
+1. Create the repository at <https://github.com/new> - owner `rayengader`,
    name `rayengader.github.io`, **Public**, no README, no .gitignore.
 2. From this folder:
 
@@ -32,7 +32,7 @@ appear at that address.
    branch `main`, folder `/ (root)`. Save.
 4. Wait a minute or two, then open <https://rayengader.github.io>.
 
-Every later change is `git add -A && git commit -m "..." && git push` — the live site
+Every later change is `git add -A && git commit -m "..." && git push` - the live site
 follows within a minute.
 
 ## Keeping it current
@@ -58,7 +58,7 @@ the page.
 - **TryHackMe and HackTheBox profile links.** The site states "Top 1% globally" but does
   not link the profile, because the handle was not to hand when it was built. Add it to
   the details list in `index.html` under `<dl class="details">`.
-- **The PFE report.** `Rapport_PFE_SOC.pdf` was deliberately left out — check it for
+- **The PFE report.** `Rapport_PFE_SOC.pdf` was deliberately left out - check it for
   client or internal detail first, then drop it in `assets/cv/` and link it from the
   `work` section if it is safe to publish.
 - **A social preview image.** GitHub Pages will serve one from `assets/og.png`

@@ -30,7 +30,7 @@
   --blue-wash:  rgba(77,141,255,.10);
   --blue-line:  rgba(77,141,255,.38);
 
-  /* incident state — simulation only */
+  /* incident state - simulation only */
   --crit:       #F0564D;
   --ok:         #3FB950;
 
@@ -315,7 +315,7 @@ h2{
 .node.crit .n-label{ fill: #F0564D; }
 .packet{ fill: #F0564D; }
 
-/* event feed — a product activity list, not a terminal */
+/* event feed - a product activity list, not a terminal */
 .sim-feed{
   border-top: 1px solid var(--line);
   padding: 8px 22px 16px;

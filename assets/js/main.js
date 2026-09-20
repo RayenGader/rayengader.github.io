@@ -1,5 +1,5 @@
 /* =============================================================
-   rayengader.github.io — page behaviour
+   rayengader.github.io - page behaviour
 
    No framework, no build step. Three things happen here:
      1. the navigation tracks which section you are reading
@@ -58,7 +58,7 @@
 
      Each step carries the attack-clock label it should display, the
      link the traffic travels, the component that changes state, the
-     event that component actually recorded, and — where relevant —
+     event that component actually recorded, and - where relevant -
      the ATT&CK technique and the rule identifier. All values are the
      real ones from the two validation scenarios.
      --------------------------------------------------------------- */
@@ -71,9 +71,9 @@
       label: "FTP brute force",
       steps: [
         { at: "00:00", path: "pA",  node: "n-atk",   state: "crit", tech: "T1595", src: "Kali",
-          msg: "nmap -sV 192.168.10.0/24 — vsftpd 3.0.5 open on 192.168.10.150:21" },
+          msg: "nmap -sV 192.168.10.0/24 - vsftpd 3.0.5 open on 192.168.10.150:21" },
         { at: "02:00", path: "pB2", node: "n-ftp",   state: "crit", sev: "critical", tech: "T1110", src: "vsftpd",
-          msg: "530 Login incorrect ×100 — Hydra from 192.168.10.129 against account ftpuser" },
+          msg: "530 Login incorrect ×100 - Hydra from 192.168.10.129 against account ftpuser" },
         { at: "02:04", path: "pC2", node: "n-suri",  state: "hot", src: "Suricata dmz0",
           msg: "sid 1000001 · LOCAL SOC – FTP Brute-Force · Priority 1 · Attempted Admin Privilege Gain" },
         { at: "02:06", path: "pD1", node: "n-wazuh", state: "hot", sev: "high", tech: "T1110", src: "Wazuh",
@@ -81,7 +81,7 @@
         { at: "08:00", node: "n-ftp", state: "crit", sev: "critical", tech: "T1078", src: "vsftpd",
           msg: "230 Login successful · ftpuser · password recovered on attempt 101" },
         { at: "08:05", node: "n-wazuh", state: "hot", sev: "high", detect: true, tech: "T1078", src: "Wazuh",
-          msg: "rule 40112 · level 12 · authentication failures followed by a success — brute force succeeded" },
+          msg: "rule 40112 · level 12 · authentication failures followed by a success - brute force succeeded" },
         { at: "08:08", path: "pE",  node: "n-hive",  state: "crit", sev: "critical", src: "TheHive",
           msg: "case opened · vsftpd 11403 + Suricata 86601 + Palo Alto 100104 correlated in one incident" },
         { at: "08:11", path: "pF",  node: "n-cortex",state: "hot", src: "Cortex",
@@ -119,11 +119,11 @@
         { at: "00:09", path: "pE",  node: "n-hive",  state: "crit", sev: "critical", src: "TheHive",
           msg: "alert · 7 observables · domain 192.168.10.151, the injection URL, source 192.168.10.129" },
         { at: "00:12", path: "pF",  node: "n-cortex",state: "hot", src: "Cortex",
-          msg: "VirusTotal 0/91 on the URL · AbuseIPDB on 192.168.10.129 — enrichment returned in seconds" },
+          msg: "VirusTotal 0/91 on the URL · AbuseIPDB on 192.168.10.129 - enrichment returned in seconds" },
         { at: "00:15", path: "pG",  node: "n-misp",  state: "hot", src: "MISP",
           msg: "injection URL and target host recorded as observables" },
         { at: "00:20", node: "n-web", state: "crit", sev: "critical", tech: "T1505.003", src: "CrowdStrike",
-          msg: "a shell was spawned by www-data straight after the suspicious SQL query — web shell" },
+          msg: "a shell was spawned by www-data straight after the suspicious SQL query - web shell" },
         { at: "00:22", path: "pC3", node: "n-cs",    state: "crit", sev: "critical", src: "CrowdStrike",
           msg: "Malicious shell on httpserver by www-data · Critical · machine quarantined in 0.5 s · out-of-band console" },
         { at: "00:25", path: "pH",  node: "n-n8n",   state: "hot", src: "n8n → Discord",
@@ -294,7 +294,7 @@
   }
 
   /* ---------------------------------------------------------------
-     3a. ATT&CK matrix — one technique open at a time
+     3a. ATT&CK matrix - one technique open at a time
      --------------------------------------------------------------- */
   function wireMatrix() {
     var detail = $("#tq-detail");
