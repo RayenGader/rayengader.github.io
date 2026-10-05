@@ -1,10 +1,12 @@
 /* =============================================================
    rayengader.github.io - page behaviour
 
-   No framework, no build step. Three things happen here:
+   No framework, no build step. Five things happen here:
+     0. the page switches between English and French
      1. the navigation tracks which section you are reading
      2. the attack simulation replays a scenario over the topology
      3. the ATT&CK matrix and the credential filter respond to input
+     4. the contact form validates and sends without leaving the page
 
    The two scenarios below are the ones actually run in the project:
    Kali (192.168.10.129) against the DMZ, with the real Suricata
@@ -22,6 +24,90 @@
   function $(sel, root) { return (root || document).querySelector(sel); }
   function $$(sel, root) {
     return Array.prototype.slice.call((root || document).querySelectorAll(sel));
+  }
+
+  /* ---------------------------------------------------------------
+     0. Language
+
+     English is the markup in index.html. French comes from i18n.js
+     and is swapped in over it; the English is remembered on first use
+     so switching back needs no second copy. The choice is kept in
+     localStorage, ?lang=fr or ?lang=en forces one, and a first-time
+     visitor whose browser is set to French starts in French.
+     --------------------------------------------------------------- */
+  var FR = window.I18N_FR || null;
+  var lang = "en";
+  var CV = { en: "assets/cv/CV_Rayen_Gader_EN.pdf", fr: "assets/cv/CV_Rayen_Gader_FR.pdf" };
+  var swaps = null;       // [{ el, attr, en, fr }] - attr is null for content
+  var titleEn = document.title;
+  var onLang = [];        // callbacks for the parts of the page drawn by script
+
+  /* French typography: the space before ? ! : ; % must not wrap. */
+  function nbsp(v) {
+    if (typeof v === "string") return v.replace(/ ([?!:;%])/g, " $1");
+    if (v && typeof v === "object") Object.keys(v).forEach(function (k) { v[k] = nbsp(v[k]); });
+    return v;
+  }
+  if (FR) nbsp(FR);
+
+  function t(key, en) {
+    return (lang === "fr" && FR && FR.ui && FR.ui[key]) || en;
+  }
+
+  function collectSwaps() {
+    swaps = [];
+    function add(sel, attr, val) {
+      var els = $$(sel);
+      var list = Array.isArray(val) ? val : [val];
+      if (els.length !== list.length) {
+        if (window.console) console.warn("i18n: " + sel + " matches " + els.length + ", expected " + list.length);
+        return;
+      }
+      els.forEach(function (el, i) {
+        if (list[i] == null) return;
+        swaps.push({ el: el, attr: attr, fr: list[i],
+                     en: attr ? el.getAttribute(attr) : el.innerHTML });
+      });
+    }
+    Object.keys(FR.dom).forEach(function (sel) { add(sel, null, FR.dom[sel]); });
+    (FR.attrs || []).forEach(function (a) { add(a[0], a[1], a[2]); });
+  }
+
+  function setLang(next, remember) {
+    lang = (next === "fr" && FR) ? "fr" : "en";
+    if (FR) {
+      if (!swaps) collectSwaps();
+      swaps.forEach(function (s) {
+        var v = lang === "fr" ? s.fr : s.en;
+        if (s.attr) s.el.setAttribute(s.attr, v); else s.el.innerHTML = v;
+      });
+    }
+    document.documentElement.lang = lang;
+    document.title = lang === "fr" && FR ? FR.title : titleEn;
+    var cv = $("#nav-cv");
+    if (cv) cv.setAttribute("href", CV[lang]);
+    $$(".lang button").forEach(function (b) {
+      b.setAttribute("aria-pressed", String(b.getAttribute("data-lang") === lang));
+    });
+    if (remember) { try { localStorage.setItem("lang", lang); } catch (e) {} }
+    onLang.forEach(function (fn) { fn(); });
+  }
+
+  function initialLang() {
+    var q = /[?&]lang=(en|fr)\b/.exec(location.search);
+    if (q) return q[1];
+    try {
+      var saved = localStorage.getItem("lang");
+      if (saved === "en" || saved === "fr") return saved;
+    } catch (e) {}
+    return /^fr\b/i.test(navigator.language || "") ? "fr" : "en";
+  }
+
+  function wireLang() {
+    $$(".lang button").forEach(function (b) {
+      b.addEventListener("click", function () { setLang(b.getAttribute("data-lang"), true); });
+    });
+    setLang(initialLang(), false);
   }
 
   /* ---------------------------------------------------------------
@@ -162,6 +248,28 @@
     });
   }
 
+  /* The scenario as shown in the current language. */
+  function localised(key) {
+    var sc = SCENARIOS[key];
+    var fr = lang === "fr" && FR && FR.sim && FR.sim[key];
+    if (!fr) return sc;
+    var res = {};
+    Object.keys(sc.results).forEach(function (k) {
+      res[k] = (fr.results && fr.results[k]) || sc.results[k];
+    });
+    return {
+      label: fr.label || sc.label,
+      results: res,
+      steps: sc.steps.map(function (step, i) {
+        var copy = {};
+        Object.keys(step).forEach(function (k) { copy[k] = step[k]; });
+        if (fr.msgs && fr.msgs[i]) copy.msg = fr.msgs[i];
+        if (fr.srcs && fr.srcs[i]) copy.src = fr.srcs[i];
+        return copy;
+      })
+    };
+  }
+
   function eventRow(step) {
     var li = document.createElement("li");
     li.className = "ev";
@@ -185,7 +293,7 @@
   function setClock(label, detected) {
     var el = $("#clock");
     if (!el) return;
-    el.innerHTML = "Attack timeline <b>" + label + "</b>" +
+    el.innerHTML = t("timeline", "Attack timeline") + " <b>" + label + "</b>" +
       (detected ? ' <span style="color:var(--blue)">· MTTD &lt; 60 s</span>' : "");
   }
 
@@ -224,10 +332,12 @@
   /* The finished state, drawn with no animation. This is what the page
      shows at rest, before anyone presses Run. */
   function renderStatic(key) {
-    var sc = SCENARIOS[key];
+    var sc = localised(key);
     var log = $("#log");
+    var btn = $("#replay");
     clearRun();
     resetNodes();
+    if (btn) { btn.disabled = false; btn.textContent = t("run", "Run simulation"); }
     if (!log) return;
     log.innerHTML = "";
     var last = sc.steps[sc.steps.length - 1];
@@ -241,17 +351,17 @@
   }
 
   function run(key) {
-    var sc = SCENARIOS[key];
+    var sc = localised(key);
     var log = $("#log");
     var feed = log ? log.parentNode : null;
     var btn = $("#replay");
 
     clearRun();
     resetNodes();
-    if (log) log.innerHTML = '<li class="ev-idle">Replaying ' + sc.label + "…</li>";
+    if (log) log.innerHTML = '<li class="ev-idle">' + t("replaying", "Replaying ") + sc.label + "…</li>";
     setResults(sc);
     setClock(sc.steps[0].at, false);
-    if (btn) { btn.disabled = true; btn.textContent = "Running…"; }
+    if (btn) { btn.disabled = true; btn.textContent = t("running", "Running…"); }
 
     var detected = false;
 
@@ -271,7 +381,7 @@
 
     timers.push(setTimeout(function () {
       setClock(sc.steps[sc.steps.length - 1].at, true);
-      if (btn) { btn.disabled = false; btn.textContent = "Run simulation"; }
+      if (btn) { btn.disabled = false; btn.textContent = t("run", "Run simulation"); }
     }, sc.steps.length * STEP_MS + 240));
   }
 
@@ -290,6 +400,7 @@
 
     btn.addEventListener("click", function () { run(current); });
 
+    onLang.push(function () { renderStatic(current); });
     renderStatic(current);
   }
 
@@ -301,13 +412,22 @@
     var buttons = $$(".tq");
     if (!detail || !buttons.length) return;
 
+    function show(b) {
+      $("b", detail).textContent = $(".tid", b).textContent + " · " + $(".tnm", b).textContent;
+      $(".body", detail).textContent = b.getAttribute("data-d");
+    }
+
     buttons.forEach(function (b) {
       b.addEventListener("click", function () {
         buttons.forEach(function (o) { o.setAttribute("aria-expanded", "false"); });
         b.setAttribute("aria-expanded", "true");
-        $("b", detail).textContent = $(".tid", b).textContent + " · " + $(".tnm", b).textContent;
-        $(".body", detail).textContent = b.getAttribute("data-d");
+        show(b);
       });
+    });
+
+    onLang.push(function () {
+      var open = $('.tq[aria-expanded="true"]');
+      if (open) show(open);
     });
   }
 
@@ -317,27 +437,201 @@
   function wireCerts() {
     var chips = $$(".filter");
     var cards = $$("#cert-grid .cert");
-    var count = $("#cert-count");
     if (!chips.length || !cards.length) return;
+
+    /* the heading is rewritten on a language change, so look the count up each time */
+    function showCount() {
+      var count = $("#cert-count");
+      var shown = cards.filter(function (card) { return !card.hidden; }).length;
+      if (count) count.textContent = String(shown);
+    }
 
     chips.forEach(function (chip) {
       chip.addEventListener("click", function () {
         var f = chip.getAttribute("data-filter");
         chips.forEach(function (c) { c.setAttribute("aria-pressed", String(c === chip)); });
-        var shown = 0;
         cards.forEach(function (card) {
-          var match = f === "all" || card.getAttribute("data-domain") === f;
-          card.hidden = !match;
-          if (match) shown++;
+          card.hidden = !(f === "all" || card.getAttribute("data-domain") === f);
         });
-        if (count) count.textContent = String(shown);
+        showCount();
       });
     });
+
+    onLang.push(showCount);
+  }
+
+  /* ---------------------------------------------------------------
+     4. Contact form
+
+     Posts to FormSubmit, which relays the message to the inbox - the
+     site itself is static and has no server. If the request fails for
+     any reason the visitor keeps what they typed and is offered the
+     same message as a pre-filled email, so nothing is ever lost.
+     --------------------------------------------------------------- */
+  var CONTACT_EMAIL = "rayengader9@gmail.com";
+  var CONTACT_ENDPOINT = "https://formsubmit.co/ajax/" + CONTACT_EMAIL;
+  var MESSAGE_MIN = 20;
+  var MESSAGE_MAX = 2000;
+  var SEND_TIMEOUT_MS = 15000;
+
+  function wireContact() {
+    var form = $("#contact-form");
+    if (!form || !window.fetch) return;   // without fetch the plain POST still works
+
+    var done = $("#contact-done");
+    var send = $("#cf-send");
+    var status = $("#cf-status");
+    var counter = $("#cf-count");
+    var fields = {
+      name:    $("#cf-name"),
+      email:   $("#cf-email"),
+      company: $("#cf-company"),
+      message: $("#cf-message")
+    };
+    var required = ["name", "email", "message"];
+    var state = "idle";      // idle | sending | failed | done
+    var sent = null;         // { name, email } of the last message delivered
+
+    function value(key) { return fields[key].value.trim(); }
+
+    function problem(key) {
+      var v = value(key);
+      if (key === "name" && !v) return t("errName", "Please enter your name.");
+      if (key === "email" && !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v)) {
+        return t("errEmail", "Please enter a valid email address.");
+      }
+      if (key === "message" && v.length < MESSAGE_MIN) {
+        return t("errMessage", "Please write a few words - at least 20 characters.");
+      }
+      return "";
+    }
+
+    function check(key) {
+      var msg = problem(key);
+      var err = $("#cf-" + key + "-err");
+      if (msg) fields[key].setAttribute("aria-invalid", "true");
+      else fields[key].removeAttribute("aria-invalid");
+      err.textContent = msg;
+      err.hidden = !msg;
+      return !msg;
+    }
+
+    function topic() {
+      return form.querySelector('input[name="topic"]:checked').value;
+    }
+
+    function mailtoHref() {
+      var lines = [value("message"), "", value("name")];
+      if (value("company")) lines.push(value("company"));
+      return "mailto:" + CONTACT_EMAIL +
+        "?subject=" + encodeURIComponent(topic() + " - " + value("name")) +
+        "&body=" + encodeURIComponent(lines.join("\n"));
+    }
+
+    function render() {
+      send.disabled = state === "sending";
+      send.textContent = state === "sending" ? t("sending", "Sending…") : t("send", "Send message");
+      status.hidden = state !== "failed";
+      if (state === "failed") {
+        $("#cf-status-text").textContent = t("failed",
+          "The message could not be sent. Your text is still here - try again, or send it by email.");
+        $("#cf-mailto").textContent = t("mailto", "Open in email");
+        $("#cf-mailto").setAttribute("href", mailtoHref());
+      }
+      form.hidden = state === "done";
+      done.hidden = state !== "done";
+      if (state === "done" && sent) {
+        $("#cf-done-text").textContent = t("doneText", "Thank you, {name}. I will reply to {email}.")
+          .replace("{name}", sent.name).replace("{email}", sent.email);
+      }
+      counter.textContent = fields.message.value.length + " / " + MESSAGE_MAX;
+    }
+
+    function finish() {
+      sent = { name: value("name"), email: value("email") };
+      state = "done";
+      form.reset();
+      render();
+      done.focus();
+    }
+
+    required.forEach(function (key) {
+      fields[key].addEventListener("blur", function () {
+        if (fields[key].value) check(key);
+      });
+      fields[key].addEventListener("input", function () {
+        if (fields[key].hasAttribute("aria-invalid")) check(key);
+        if (key === "message") counter.textContent = fields.message.value.length + " / " + MESSAGE_MAX;
+      });
+    });
+
+    form.addEventListener("submit", function (e) {
+      e.preventDefault();
+      if (state === "sending") return;
+
+      var bad = required.filter(function (key) { return !check(key); });
+      if (bad.length) { fields[bad[0]].focus(); return; }
+
+      /* a filled honeypot is a bot: answer as if it worked, send nothing */
+      if (form.elements._honey.value) { finish(); return; }
+
+      var payload = {
+        name: value("name"),
+        email: value("email"),
+        company: value("company") || "-",
+        topic: topic(),
+        message: value("message"),
+        language: lang,
+        _replyto: value("email"),
+        _subject: "Portfolio contact - " + topic() + " - " + value("name"),
+        _template: "table",
+        _captcha: "false"
+      };
+
+      var abort = window.AbortController ? new AbortController() : null;
+      var timer = abort ? setTimeout(function () { abort.abort(); }, SEND_TIMEOUT_MS) : null;
+
+      state = "sending";
+      render();
+
+      fetch(CONTACT_ENDPOINT, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", "Accept": "application/json" },
+        body: JSON.stringify(payload),
+        signal: abort ? abort.signal : undefined
+      })
+        .then(function (res) { return res.json(); })
+        .then(function (data) {
+          if (String(data && data.success) !== "true") throw new Error("rejected");
+          finish();
+        })
+        .catch(function () {
+          state = "failed";
+          render();
+        })
+        .then(function () { if (timer) clearTimeout(timer); });
+    });
+
+    $("#cf-again").addEventListener("click", function () {
+      state = "idle";
+      render();
+      fields.name.focus();
+    });
+
+    onLang.push(function () {
+      required.forEach(function (key) {
+        if (fields[key].hasAttribute("aria-invalid")) check(key);
+      });
+      render();
+    });
+    render();
   }
 
   /* --------------------------------------------------------------- */
+  wireLang();
   trackSections();
   wireSimulation();
   wireMatrix();
   wireCerts();
+  wireContact();
 })();

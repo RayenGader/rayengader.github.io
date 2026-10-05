@@ -10,6 +10,8 @@
 <link rel="canonical" href="https://rayengader.github.io/">
 
 <meta property="og:type" content="profile">
+<meta property="og:locale" content="en_GB">
+<meta property="og:locale:alternate" content="fr_FR">
 <meta property="og:title" content="Rayen Gader - Cyber Security Engineer">
 <meta property="og:description" content="L2 SOC analyst and detection engineer. Darktrace, LogRhythm, CrowdStrike. A ten-component SOC built end to end, measured MTTD under one minute. 18 certifications.">
 <meta property="og:url" content="https://rayengader.github.io/">
@@ -33,7 +35,13 @@
       <a href="#credentials">Credentials</a>
       <a href="#contact">Contact</a>
     </nav>
-    <a class="btn btn-sm" href="assets/cv/CV_Rayen_Gader_EN.pdf" target="_blank" rel="noopener">Résumé</a>
+    <div class="nav-tools">
+      <div class="lang" role="group" aria-label="Language">
+        <button type="button" data-lang="en" lang="en" aria-pressed="true" title="English">EN</button>
+        <button type="button" data-lang="fr" lang="fr" aria-pressed="false" title="Français">FR</button>
+      </div>
+      <a class="btn btn-sm" id="nav-cv" href="assets/cv/CV_Rayen_Gader_EN.pdf" target="_blank" rel="noopener">Résumé</a>
+    </div>
   </div>
 </header>
 
@@ -128,7 +136,7 @@
   </section>
 
   <!-- ============================ STACK ============================ -->
-  <section class="section">
+  <section class="section" id="platforms">
     <div class="wrap">
       <div class="section-head">
         <p class="eyebrow">Platforms</p>
@@ -454,11 +462,11 @@
         <div class="minor">
           <div class="minor-row">
             <div class="mt">Phishing simulation, end to end</div>
-            <div class="md">OSINT reconnaissance, custom scenarios and templates, campaigns triggered and tracked through an API - delivered fully functional and completely documented, with a reproducible procedure and an awareness debrief. <span style="color:var(--ink-3)">Pwn &amp; Patch Tunisia, 2024.</span></div>
+            <div class="md">OSINT reconnaissance, custom scenarios and templates, campaigns triggered and tracked through an API - delivered fully functional and completely documented, with a reproducible procedure and an awareness debrief. <span class="dim">Pwn &amp; Patch Tunisia, 2024.</span></div>
           </div>
           <div class="minor-row">
             <div class="mt">Cybersecurity training platform</div>
-            <div class="md">An Odoo-based LMS for internal curricula: module catalogue, learner paths, progress tracking, and hands-on labs attached to each module. Driven from requirements through to production release. <span style="color:var(--ink-3)">DEFENSYLAB, 2023.</span></div>
+            <div class="md">An Odoo-based LMS for internal curricula: module catalogue, learner paths, progress tracking, and hands-on labs attached to each module. Driven from requirements through to production release. <span class="dim">DEFENSYLAB, 2023.</span></div>
           </div>
           <div class="minor-row">
             <div class="mt">Threat-intel driven blocking</div>
@@ -569,7 +577,7 @@
   </section>
 
   <!-- ============================ EDUCATION ============================ -->
-  <section class="section">
+  <section class="section" id="education">
     <div class="wrap">
       <div class="section-head">
         <p class="eyebrow">Education</p>
@@ -605,24 +613,93 @@
   <!-- ============================ CONTACT ============================ -->
   <div class="wrap">
     <section class="contact" id="contact">
-      <p class="eyebrow">Contact</p>
-      <h2>Hiring for a SOC?</h2>
-      <p class="section-lead">
-        I am open to SOC engineer, cyber engineer, incident response, threat hunting,
-        detection engineering and SOC analyst roles.
-      </p>
-      <div class="hero-actions">
-        <a class="btn btn-primary" href="mailto:rayengader9@gmail.com">rayengader9@gmail.com</a>
-        <a class="btn" href="https://www.linkedin.com/in/rayengader" target="_blank" rel="noopener">LinkedIn</a>
-        <a class="btn" href="assets/cv/CV_Rayen_Gader_EN.pdf" target="_blank" rel="noopener">Résumé (EN)</a>
-        <a class="btn" href="assets/cv/CV_Rayen_Gader_FR.pdf" target="_blank" rel="noopener">CV (FR)</a>
+      <div class="contact-grid">
+        <div class="contact-intro">
+          <p class="eyebrow">Contact</p>
+          <h2>Hiring for a SOC?</h2>
+          <p class="section-lead">
+            I am open to SOC engineer, cyber engineer, incident response, threat hunting,
+            detection engineering and SOC analyst roles. Send a message here, or reach me directly.
+          </p>
+
+          <ul class="channels">
+            <li><span class="ch-k">Email</span><a href="mailto:rayengader9@gmail.com">rayengader9@gmail.com</a></li>
+            <li><span class="ch-k">LinkedIn</span><a href="https://www.linkedin.com/in/rayengader" target="_blank" rel="noopener">linkedin.com/in/rayengader</a></li>
+            <li><span class="ch-k">GitHub</span><a href="https://github.com/rayengader" target="_blank" rel="noopener">github.com/rayengader</a></li>
+            <li><span class="ch-k">Résumé</span><span><a href="assets/cv/CV_Rayen_Gader_EN.pdf" target="_blank" rel="noopener">English (PDF)</a> · <a href="assets/cv/CV_Rayen_Gader_FR.pdf" target="_blank" rel="noopener">Français (PDF)</a></span></li>
+          </ul>
+        </div>
+
+        <div class="contact-panel">
+          <!-- Without JavaScript the form still posts straight to FormSubmit. -->
+          <form class="cform" id="contact-form" action="https://formsubmit.co/rayengader9@gmail.com" method="POST" novalidate>
+            <input type="hidden" name="_subject" value="Portfolio contact">
+            <input type="hidden" name="_template" value="table">
+            <input class="hp" type="text" name="_honey" tabindex="-1" autocomplete="off" aria-hidden="true">
+
+            <div class="field-row">
+              <div class="field">
+                <label for="cf-name">Name</label>
+                <input id="cf-name" name="name" type="text" autocomplete="name" maxlength="80" required placeholder="Your full name" aria-describedby="cf-name-err">
+                <p class="field-err" id="cf-name-err" hidden></p>
+              </div>
+              <div class="field">
+                <label for="cf-email">Email</label>
+                <input id="cf-email" name="email" type="email" autocomplete="email" inputmode="email" maxlength="120" required placeholder="you@company.com" aria-describedby="cf-email-err">
+                <p class="field-err" id="cf-email-err" hidden></p>
+              </div>
+            </div>
+
+            <div class="field">
+              <label for="cf-company">Company <span class="opt">optional</span></label>
+              <input id="cf-company" name="company" type="text" autocomplete="organization" maxlength="100" placeholder="Company or organisation">
+            </div>
+
+            <fieldset class="field topics">
+              <legend>Subject</legend>
+              <div class="chips">
+                <input type="radio" name="topic" id="cf-t1" value="Job opportunity" checked>
+                <label for="cf-t1">Job opportunity</label>
+                <input type="radio" name="topic" id="cf-t2" value="Project or mission">
+                <label for="cf-t2">Project or mission</label>
+                <input type="radio" name="topic" id="cf-t3" value="Something else">
+                <label for="cf-t3">Something else</label>
+              </div>
+            </fieldset>
+
+            <div class="field">
+              <div class="field-top">
+                <label for="cf-message">Message</label>
+                <span class="counter" id="cf-count" aria-hidden="true">0 / 2000</span>
+              </div>
+              <textarea id="cf-message" name="message" rows="6" maxlength="2000" required placeholder="The role, the team, the timeline - whatever helps me answer usefully." aria-describedby="cf-message-err"></textarea>
+              <p class="field-err" id="cf-message-err" hidden></p>
+            </div>
+
+            <div class="cform-foot">
+              <p class="cform-note">Delivered by FormSubmit. Your details are used only to reply to you.</p>
+              <button type="submit" class="btn btn-primary" id="cf-send">Send message</button>
+            </div>
+
+            <div class="cform-status" id="cf-status" role="status" aria-live="polite" hidden>
+              <span id="cf-status-text"></span>
+              <a class="btn btn-sm" id="cf-mailto" href="mailto:rayengader9@gmail.com"></a>
+            </div>
+          </form>
+
+          <div class="cform-done" id="contact-done" tabindex="-1" hidden>
+            <svg class="done-mark" viewBox="0 0 24 24" width="28" height="28" aria-hidden="true"><circle cx="12" cy="12" r="11" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M7 12.5l3.2 3.2L17 9" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <h3 id="cf-done-title">Message sent</h3>
+            <p id="cf-done-text"></p>
+            <button type="button" class="btn btn-sm" id="cf-again">Send another message</button>
+          </div>
+        </div>
       </div>
 
       <dl class="details">
         <div class="detail"><dt>Location</dt><dd>Ariana, Tunisia <span class="sub">· GMT+1</span></dd></div>
         <div class="detail"><dt>Mobility</dt><dd>Europe, Canada, EMEA <span class="sub">or fully remote</span></dd></div>
         <div class="detail"><dt>Languages</dt><dd>Arabic <span class="sub">native</span> · French <span class="sub">fluent</span> · English <span class="sub">fluent</span></dd></div>
-        <div class="detail"><dt>GitHub</dt><dd><a href="https://github.com/rayengader" target="_blank" rel="noopener">github.com/rayengader</a></dd></div>
       </dl>
     </section>
 
@@ -634,6 +711,7 @@
 
 </main>
 
+<script src="assets/js/i18n.js"></script>
 <script src="assets/js/main.js"></script>
 </body>
 </html>
