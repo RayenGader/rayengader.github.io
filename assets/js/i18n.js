@@ -22,7 +22,7 @@ window.I18N_FR = {
   dom: {
     /* navigation */
     ".navlinks a": ["Expertise", "Réalisations", "Expérience", "Certifications", "Contact"],
-    "#nav-cv": "CV",
+
 
     /* hero */
     ".availability": "<span class='led' aria-hidden='true'></span>Ouvert aux opportunités - relocalisation ou télétravail",
@@ -171,7 +171,7 @@ window.I18N_FR = {
     /* contact */
     ".contact h2": "Vous recrutez pour un SOC ?",
     ".contact .section-lead": "Je suis ouvert aux postes d'ingénieur SOC, ingénieur cybersécurité, réponse à incident, threat hunting, ingénierie de détection et analyste SOC. Écrivez-moi ici, ou contactez-moi directement.",
-    ".channels .ch-k": ["E-mail", null, null, "CV"],
+    ".channels .ch-k": ["E-mail", null, null, null],
     "label[for='cf-name']": "Nom",
     "label[for='cf-email']": "E-mail",
     "label[for='cf-company']": "Entreprise <span class='opt'>facultatif</span>",
