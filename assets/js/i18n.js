@@ -31,7 +31,7 @@ window.I18N_FR = {
     ".hero .hero-actions a": ["Voir les réalisations", "Me contacter"],
 
     /* metrics */
-    ".metric .v": ["2+ ans", null, null, "Top 1 %"],
+    ".metric .v": ["+3 ans", null, null, "Top 1 %"],
     ".metric .l": [
       "en SOC managé, comme analyste N2 sur les alertes escaladées",
       "certifications - INE, EC-Council, CrowdStrike, Red Hat",
