@@ -27,7 +27,7 @@ window.I18N_FR = {
     /* hero */
     ".availability": "<span class='led' aria-hidden='true'></span>Ouvert aux opportunités - relocalisation ou télétravail",
     ".hero h1": "Je construis la détection, puis je réponds de ce qu'elle remonte.",
-    ".hero-sub": "Ingénieur cybersécurité et analyste SOC N2. Deux ans à déployer et affiner <strong>Darktrace</strong>, <strong>LogRhythm</strong> et <strong>CrowdStrike Falcon</strong> au sein d'un SOC managé - et un projet où j'ai construit moi-même toute la chaîne de détection, chronomètre en main.",
+    ".hero-sub": "Ingénieur cybersécurité et analyste SOC N2. Plus de 3 ans à déployer et affiner <strong>Darktrace</strong>, <strong>LogRhythm</strong> et <strong>CrowdStrike Falcon</strong> au sein d'un SOC managé - et un projet où j'ai construit moi-même toute la chaîne de détection, chronomètre en main.",
     ".hero .hero-actions a": ["Voir les réalisations", "Me contacter"],
 
     /* metrics */
