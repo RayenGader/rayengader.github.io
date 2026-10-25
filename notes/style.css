@@ -102,7 +102,7 @@ label { font-size: .78rem; font-weight: 800; letter-spacing: .04em; text-transfo
   padding-left: max(16px, env(safe-area-inset-left, 0px));
   padding-right: max(16px, env(safe-area-inset-right, 0px));
 }
-.login-card { width: min(420px, 100%); }
+.note.login-card { width: min(420px, 100%); margin: 0; }
 .login-card .stack { gap: 8px; margin-top: 14px; }
 .login-card .btn { margin-top: 6px; align-self: flex-start; }
 .sub { margin: 4px 0 0; color: var(--soft); font-size: .92rem; }
