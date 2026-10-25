@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<meta name="referrer" content="no-referrer">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; connect-src https://api.github.com; img-src 'self' data:; base-uri 'none'; form-action 'none'">
+<title>Carnet de Rayen</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect x='5' y='6' width='22' height='22' rx='3' fill='%23fff1b8' transform='rotate(-6 16 17)'/%3E%3Crect x='11' y='3' width='10' height='5' rx='1' fill='%23c9b8f0'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Nunito:wght@400;600;700;800&display=swap">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<p id="boot" class="boot">ouverture du carnet…</p>
+
+<!-- Connexion -->
+<section id="login" class="login" hidden>
+  <div class="note yellow login-card">
+    <h1 class="brand">mon carnet ✿</h1>
+    <p class="sub">Connecte-toi avec ton token GitHub pour ouvrir tes notes.</p>
+    <form id="login-form" class="stack">
+      <label for="l-repo">Dépôt privé des notes</label>
+      <input id="l-repo" name="username" autocomplete="username" required spellcheck="false" value="RayenGader/notes-data" pattern="[\w.\-]+/[\w.\-]+" title="propriétaire/dépôt, ex. RayenGader/notes-data">
+      <label for="l-token">Token GitHub</label>
+      <input id="l-token" name="password" type="password" autocomplete="current-password" required spellcheck="false" placeholder="github_pat_…">
+      <label class="check"><input id="l-remember" type="checkbox" checked> Rester connecté sur cet appareil</label>
+      <button class="btn primary" type="submit" id="l-submit">Ouvrir mon carnet</button>
+      <p id="l-error" class="error" role="alert" hidden></p>
+    </form>
+    <details class="setup">
+      <summary>Première fois ? (2 minutes)</summary>
+      <ol>
+        <li><a href="https://github.com/new?name=notes-data&amp;visibility=private&amp;description=Donn%C3%A9es%20de%20mon%20carnet" target="_blank" rel="noopener noreferrer">Crée un dépôt <b>privé</b></a> nommé <code>notes-data</code>.</li>
+        <li><a href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener noreferrer">Crée un token « fine-grained »</a> :
+          <i>Repository access</i> → <i>Only select repositories</i> → <code>notes-data</code>,
+          puis <i>Permissions</i> → <i>Contents</i> : <b>Read and write</b>.</li>
+        <li>Colle le token ici. Il reste sur ton appareil et n'est envoyé qu'à api.github.com.</li>
+      </ol>
+    </details>
+  </div>
+</section>
+
+<!-- Carnet -->
+<section id="main" class="main" hidden>
+  <header class="top">
+    <div class="brandrow">
+      <h1 class="brand">mon carnet ✿</h1>
+      <button id="status" class="status" type="button" data-state="ok" aria-live="polite">enregistré</button>
+    </div>
+    <div class="tools">
+      <input id="search" type="search" placeholder="chercher…" aria-label="Chercher dans les notes" autocomplete="off">
+      <button id="new-btn" class="btn primary" type="button">+ post-it</button>
+      <div class="menu">
+        <button id="menu-btn" class="btn ghost" type="button" aria-haspopup="true" aria-expanded="false" aria-label="Plus d'options">⋯</button>
+        <div id="menu" class="menu-pop" hidden>
+          <button type="button" data-menu="export">Exporter une sauvegarde</button>
+          <button type="button" data-menu="import">Importer un fichier…</button>
+          <button type="button" data-menu="reload">Recharger depuis GitHub</button>
+          <button type="button" data-menu="logout">Se déconnecter</button>
+        </div>
+      </div>
+      <input id="import-file" type="file" accept="application/json,.json" hidden>
+    </div>
+    <p id="public-warn" class="banner" hidden>Attention : le dépôt de tes notes est <b>public</b>. Passe-le en privé dans ses réglages GitHub.</p>
+    <nav id="tags" class="tags" aria-label="Catégories"></nav>
+  </header>
+
+  <div id="grid" class="grid"></div>
+
+  <div id="empty" class="empty" hidden>
+    <p class="hand">ton carnet est tout vide ✿</p>
+    <p>Ajoute un premier post-it, ou importe ton fichier de notes.</p>
+    <div class="row">
+      <button type="button" class="btn primary" data-menu="new">+ post-it</button>
+      <button type="button" class="btn ghost" data-menu="import">Importer un fichier…</button>
+    </div>
+  </div>
+  <p id="nores" class="nores" hidden>Aucune note ne correspond.</p>
+</section>
+
+<!-- Éditeur -->
+<dialog id="editor" aria-labelledby="ed-title">
+  <form id="ed-form" class="ed">
+    <h2 id="ed-title" class="hand">nouveau post-it</h2>
+    <div class="row2">
+      <div class="stack">
+        <label for="f-title">Titre</label>
+        <input id="f-title" required maxlength="80" autocomplete="off">
+      </div>
+      <div class="stack">
+        <label for="f-tag">Catégorie</label>
+        <input id="f-tag" list="tag-list" maxlength="40" autocomplete="off" placeholder="ex. Tigre · SQL">
+        <datalist id="tag-list"></datalist>
+      </div>
+    </div>
+    <fieldset class="colors">
+      <legend>Couleur</legend>
+      <label class="sw yellow"><input type="radio" name="f-color" value="yellow" checked><span>jaune</span></label>
+      <label class="sw pink"><input type="radio" name="f-color" value="pink"><span>rose</span></label>
+      <label class="sw mint"><input type="radio" name="f-color" value="mint"><span>menthe</span></label>
+      <label class="sw lilac"><input type="radio" name="f-color" value="lilac"><span>lilas</span></label>
+      <label class="sw blue"><input type="radio" name="f-color" value="blue"><span>bleu</span></label>
+    </fieldset>
+    <div class="tabs" role="tablist">
+      <button type="button" role="tab" data-tab="write" aria-selected="true">Écrire</button>
+      <button type="button" role="tab" data-tab="preview" aria-selected="false">Aperçu</button>
+    </div>
+    <textarea id="f-body" rows="12" spellcheck="false" aria-label="Contenu de la note"></textarea>
+    <div id="f-preview" class="note-body preview" hidden></div>
+    <details class="help">
+      <summary>Comment écrire</summary>
+      <dl>
+        <dt><code>```Libellé</code> … <code>```</code></dt><dd>bloc de code avec un bouton copier (requête SQL, message…)</dd>
+        <dt><code>- **clé** : texte</code></dt><dd>liste</dd>
+        <dt><code>**gras**</code> · <code>`code`</code></dt><dd>mise en forme</dd>
+        <dt><code>&gt; texte</code></dt><dd>encadré</dd>
+        <dt><code>! texte</code></dt><dd>remarque importante</dd>
+        <dt>un lien seul sur sa ligne</dt><dd>lien avec un bouton copier</dd>
+      </dl>
+    </details>
+    <p id="ed-dirty" class="ed-dirty" hidden>Modifications non enregistrées.
+      <button type="button" class="btn small ghost" id="ed-discard">fermer quand même</button>
+      <button type="button" class="btn small" id="ed-keep">continuer</button>
+    </p>
+    <div class="ed-actions">
+      <button type="button" class="btn ghost" id="ed-cancel">Annuler</button>
+      <button type="submit" class="btn primary">Enregistrer</button>
+    </div>
+  </form>
+</dialog>
+
+<div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
+
+<script src="app.js"></script>
+</body>
+</html>
